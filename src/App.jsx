@@ -1,24 +1,13 @@
 import React from "react";
+
+import MainContainer from "./components/MainContainer";
+
 import "./styles/App.scss";
 
-function App() {
-  return (
-    <div className="App" data-test="container-app">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => (
+  <div data-test="container-app">
+    <MainContainer />
+  </div>
+);
 
 export default App;

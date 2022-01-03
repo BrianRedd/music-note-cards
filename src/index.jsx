@@ -2,6 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./styles/index.scss";
 import App from "./App";
+
+import "./styles/custom.scss";
+import "@fortawesome/fontawesome-free/css/all.css";
+
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
