@@ -1,8 +1,9 @@
 /** @module NoteCardsContainer */
 
 import React from "react";
-import PropTypes from "prop-types";
 import { Row, Col } from "reactstrap";
+
+import "./styles/notecards.scss";
 
 import NoteStaff from "./NoteStaff";
 import FretBoard from "./FretBoard";
@@ -12,27 +13,15 @@ import FretBoard from "./FretBoard";
  * @description Functional Presentational component for NoteCardsContainer
  * @returns {React.Component} - Rendered component.
  */
-const NoteCardsContainer = props => {
-  const { data } = props;
-
-  return (
-    <Row data-test="container-note-cards">
-      <Col xs={4}>
-        <NoteStaff data={data} />
-      </Col>
-      <Col xs={8}>
-        <FretBoard data={data} />
-      </Col>
-    </Row>
-  );
-};
-
-NoteCardsContainer.propTypes = {
-  data: PropTypes.string
-};
-
-NoteCardsContainer.defaultProps = {
-  data: "Hello World"
-};
+const NoteCardsContainer = () => (
+  <Row data-test="container-note-cards" className="note-cards-container">
+    <Col xs={4}>
+      <NoteStaff />
+    </Col>
+    <Col xs={8}>
+      <FretBoard />
+    </Col>
+  </Row>
+);
 
 export default NoteCardsContainer;

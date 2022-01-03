@@ -1,30 +1,31 @@
 /** @module FretBoard */
 
 import React from "react";
-import PropTypes from "prop-types";
+
+import * as constant from "./data/constants";
+
+import "./styles/notecards.scss";
 
 /**
  * @function FretBoard
  * @description Functional Presentational component for FretBoard
  * @returns {React.Component} - Rendered component.
  */
-const FretBoard = props => {
-  const { data } = props;
-
-  return (
-    <div data-test="container-note-cards">
-      <div>{JSON.stringify(props, null, 2)}</div>
-      <div>Data: {data}</div>
+const FretBoard = () => (
+  <div data-test="presentation-fretboard" className="fretboard-container">
+    <div className="fretboard">
+      {(constant?.FRETS ?? []).map(fret => (
+        <div className="fret" key={fret}>
+          {(constant?.STRINGS ?? []).map(string => (
+            <div
+              className="string"
+              key={`${fret}-${string}`}
+            >{`${fret}-${string}`}</div>
+          ))}
+        </div>
+      ))}
     </div>
-  );
-};
-
-FretBoard.propTypes = {
-  data: PropTypes.string
-};
-
-FretBoard.defaultProps = {
-  data: "Hello World"
-};
+  </div>
+);
 
 export default FretBoard;

@@ -1,0 +1,19 @@
+/** notecards.scss */
+
+.note-cards-container {
+    min-height: 412px;
+}
+
+.fretboard-container {
+    border: 1px solid black;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fretboard {    
+    background-color: lightgray;
+    width: 500px;
+    height: 200px;
+}
