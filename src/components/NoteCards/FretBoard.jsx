@@ -2,7 +2,7 @@
 
 import React, { memo } from "react";
 import PropTypes from "prop-types";
-import { ButtonBase } from "@mui/material";
+import { Alert, ButtonBase } from "@mui/material";
 
 import * as constant from "./data/constants";
 import * as allTypes from "../../types/appTypes";
@@ -15,7 +15,7 @@ import "./styles/fretboard.scss";
  * @returns {React.Component} - Rendered component.
  */
 const FretBoard = props => {
-  const { settings, pressButton } = props;
+  const { settings, pressButton, alert } = props;
 
   const Frets = memo(fretProps => {
     const { stringNumber } = fretProps;
@@ -80,19 +80,46 @@ const FretBoard = props => {
   });
 
   return (
-    <div data-test="presentation-fretboard" className="fretboard-container">
-      <Strings />
+    <div data-test="presentation-fretboard" className="section-container">
+      <Alert
+        severity={alert.severity}
+        action={
+          <ButtonBase
+            color="inherit"
+            size="small"
+            onClick={() => {
+              // eslint-disable-next-line no-console
+              console.log("open settings!");
+            }}
+          >
+            <span className="fas fa-cog fa-2x" />
+          </ButtonBase>
+        }
+      >
+        {alert.text}
+      </Alert>
+      <div className="fretboard-container">
+        <Strings />
+      </div>
     </div>
   );
 };
 
 FretBoard.propTypes = {
   settings: allTypes.settings.types,
+  alert: PropTypes.shape({
+    severity: PropTypes.string,
+    text: PropTypes.string
+  }),
   pressButton: PropTypes.func
 };
 
 FretBoard.defaultProps = {
   settings: allTypes.settings.defaults,
+  alert: PropTypes.shape({
+    severity: "info",
+    text: "Begin!"
+  }),
   pressButton: () => {}
 };
 

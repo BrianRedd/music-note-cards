@@ -2,7 +2,11 @@
 
 $staff-height: 200px;
 
+$staff-width: 100px;
+
 $line-height: calc($staff-height / 10);
+
+$note-dimension: 20px;
 
 $line: 1px solid black;
 
@@ -10,7 +14,12 @@ $line: 1px solid black;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  height: auto;
+}
+
+.stats {
+  height: auto;
+  padding: 10px;
 }
 
 .treble-clef {
@@ -21,8 +30,7 @@ $line: 1px solid black;
 
 .staff {
   height: $staff-height;
-  width: 100px;
-  background-color: aliceblue;
+  width: $staff-width;
   position: relative;
   .line {
     width: 100%;
@@ -36,19 +44,46 @@ $line: 1px solid black;
     }
   }
   .ledger-line {
-    width: 40px;
+    width: 50px;
     height: $line-height;
     border-bottom: $line;
     margin: auto;
     visibility: hidden;
+    &.visible {
+      visibility: visible;
+    }
   }
   .note {
     position: absolute;
-    width: 30px;
-    height: 20px;
+    height: $note-dimension - 2;
+    width: calc($note-dimension * 1.2);
     border-radius: 50%;
-    background-color: black;
+    background-color: white;
+    border: 3px solid black;
     top: 0px;
-    left: 35px;
+    left: calc(($staff-width - $note-dimension * 1.2) / 2 );
+    &.with-symbol {
+      &:before {
+        position: absolute;
+        left: -10px;
+        top: -10px;
+        font-size: large;
+      }
+      &.sharp {
+        &:before {
+          content: "\266F";
+        }
+      }
+      &.natural {
+        &:before {
+          content: "\266E";
+        }
+      }
+      &.flat {
+        &:before {
+          content: "\266D";
+        }
+      }
+    }
   }
 }
