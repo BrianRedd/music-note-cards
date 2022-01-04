@@ -33,9 +33,13 @@ const NoteCardsContainer = props => {
   useEffect(() => {
     if (!notes.length) {
       // TODO: create noteArray based on settings
-      setNotes(availableNotes);
+      let filteredNotes = [...availableNotes];
+      if (settings.instrument === "ukelele") {
+        filteredNotes = filteredNotes.filter(note => !note.guitarOnly);
+      }
+      setNotes(filteredNotes);
     }
-  }, [notes]);
+  }, [notes, settings]);
 
   const randomizeNextNote = useCallback(() => {
     const newNote = notes[Math.floor(Math.random() * notes.length)];
@@ -52,6 +56,7 @@ const NoteCardsContainer = props => {
   }, [notes, randomNote, randomizeNextNote]);
 
   const updateSelectedNotes = noteObject => {
+    // TODO: redo?
     if (selectedNotes.length + 1 === notes.length) {
       // eslint-disable-next-line no-console
       console.log("DONE!");

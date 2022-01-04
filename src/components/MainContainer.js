@@ -14,7 +14,7 @@ import NoteCardsContainer from "./NoteCards/NoteCardsContainer";
 const MainContainer = () => {
   const settings = {
     ...allTypes.settings.defaults,
-    // instrument: "ukelele",
+    instrument: "ukelele",
     numberOfFrets: 7
   };
   return (
