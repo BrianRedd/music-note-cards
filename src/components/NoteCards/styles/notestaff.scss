@@ -1,0 +1,54 @@
+/** @module notestaff.scss */
+
+$staff-height: 200px;
+
+$line-height: calc($staff-height / 10);
+
+$line: 1px solid black;
+
+.staff-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.treble-clef {
+  height: $staff-height;
+  padding-top: 20px;
+  font-size: 70px;
+}
+
+.staff {
+  height: $staff-height;
+  width: 100px;
+  background-color: aliceblue;
+  position: relative;
+  .line {
+    width: 100%;
+    height: $line-height;
+    border-bottom: $line;
+    border-left: 3px double black;
+    border-right: $line;
+    &.first {
+      border-left: none;
+      border-right: none;
+    }
+  }
+  .ledger-line {
+    width: 40px;
+    height: $line-height;
+    border-bottom: $line;
+    margin: auto;
+    visibility: hidden;
+  }
+  .note {
+    position: absolute;
+    width: 30px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: black;
+    top: 0px;
+    left: 35px;
+  }
+}

@@ -7,7 +7,7 @@ import { ButtonBase } from "@mui/material";
 import * as constant from "./data/constants";
 import * as allTypes from "../../types/appTypes";
 
-import "./styles/notecards.scss";
+import "./styles/fretboard.scss";
 
 /**
  * @function FretBoard

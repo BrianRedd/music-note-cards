@@ -5,7 +5,7 @@ import { Row, Col } from "reactstrap";
 
 import * as allTypes from "../../types/appTypes";
 
-import "./styles/notecards.scss";
+import "./styles/notecardscontainer.scss";
 
 import NoteStaff from "./NoteStaff";
 import FretBoard from "./FretBoard";
