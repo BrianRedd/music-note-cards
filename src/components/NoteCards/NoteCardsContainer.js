@@ -1,9 +1,9 @@
 /** @module NoteCardsContainer */
 
-import React from "react";
+import React, { useState } from "react";
 import { Row, Col } from "reactstrap";
 
-import * as allTypes from "./types/appTypes";
+import * as allTypes from "../../types/appTypes";
 
 import "./styles/notecards.scss";
 
@@ -15,22 +15,33 @@ import FretBoard from "./FretBoard";
  * @description Functional Presentational component for NoteCardsContainer
  * @returns {React.Component} - Rendered component.
  */
-const NoteCardsContainer = () => {
-  const settings = {
-    ...allTypes.settings.defaults,
-    // instrument: "ukelele",
-    numberOfFrets: 7
+const NoteCardsContainer = props => {
+  const { settings } = props;
+
+  const [pressedValue, setPressedValue] = useState("");
+
+  const pressButton = value => {
+    setPressedValue(value);
   };
+
   return (
     <Row data-test="container-note-cards" className="note-cards-container">
       <Col xs={4}>
-        <NoteStaff />
+        <NoteStaff pressedValue={pressedValue} />
       </Col>
       <Col xs={8}>
-        <FretBoard settings={settings} />
+        <FretBoard settings={settings} pressButton={pressButton} />
       </Col>
     </Row>
   );
+};
+
+NoteCardsContainer.propTypes = {
+  settings: allTypes.settings.types
+};
+
+NoteCardsContainer.defaultProps = {
+  settings: allTypes.settings.defaults
 };
 
 export default NoteCardsContainer;
