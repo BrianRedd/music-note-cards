@@ -19,7 +19,7 @@ const TrebleClef = () => <span className="treble-clef">&#119070;</span>;
  * @returns {React.Component} - Rendered component.
  */
 const NoteStaff = props => {
-  const { randomNote, stats } = props;
+  const { currentNoteTest, stats } = props;
 
   const Lines = memo(() => {
     const lines = [];
@@ -35,7 +35,8 @@ const NoteStaff = props => {
       lines.push(
         <div
           className={`ledger-line below-${i}${
-            randomNote?.ledgerLine && i <= Number(randomNote?.ledgerLine)
+            currentNoteTest?.ledgerLine &&
+            i <= Number(currentNoteTest?.ledgerLine)
               ? " visible"
               : ""
           }`}
@@ -47,13 +48,13 @@ const NoteStaff = props => {
   });
 
   const Note = memo(() => {
-    const topLocation = (randomNote.staffValue + 1) * 10;
+    const topLocation = (currentNoteTest.staffValue + 1) * 10;
     const noteClassArray = ["note"];
-    if (randomNote?.key) {
+    if (currentNoteTest?.key) {
       noteClassArray.push("with-symbol");
-      noteClassArray.push(randomNote?.key);
+      noteClassArray.push(currentNoteTest?.key);
     }
-    return randomNote ? (
+    return currentNoteTest ? (
       <div
         className={noteClassArray.join(" ")}
         style={{ marginTop: `${topLocation}px` }}
@@ -66,11 +67,11 @@ const NoteStaff = props => {
   return (
     <div data-test="container-note-cards" className="p-2">
       <div className="stats">
-        Number Correct: {stats.numberCorrect}
+        Number of Correct Guesses: {stats.numberCorrect}
         <br />
-        Number Wrong: {stats.numberWrong}
+        Number of Wrong Guesses: {stats.numberWrong}
         <br />
-        Number Remaining: {stats.numberRemaining}
+        Test Items Remaining: {stats.numberRemaining}
         <br />
       </div>
       <div className="staff-container">
@@ -78,7 +79,7 @@ const NoteStaff = props => {
         <div className="staff">
           <div
             className={`ledger-line above-1${
-              randomNote?.ledgerLine === -1 ? " visible" : ""
+              currentNoteTest?.ledgerLine === -1 ? " visible" : ""
             }`}
           />
           <Lines />
@@ -91,7 +92,7 @@ const NoteStaff = props => {
 };
 
 NoteStaff.propTypes = {
-  randomNote: allTypes.note.types,
+  currentNoteTest: allTypes.note.types,
   stats: PropTypes.shape({
     numberCorrect: PropTypes.number,
     numberWrong: PropTypes.number,
@@ -100,7 +101,7 @@ NoteStaff.propTypes = {
 };
 
 NoteStaff.defaultProps = {
-  randomNote: allTypes.note.defaults,
+  currentNoteTest: allTypes.note.defaults,
   stats: {
     numberCorrect: 0,
     numberWrong: 0,

@@ -15,7 +15,7 @@ import "./styles/fretboard.scss";
  * @returns {React.Component} - Rendered component.
  */
 const FretBoard = props => {
-  const { settings, pressButton, alert } = props;
+  const { settings, makeFretboardSelection, alert } = props;
 
   const Frets = memo(fretProps => {
     const { stringNumber } = fretProps;
@@ -33,7 +33,10 @@ const FretBoard = props => {
           }`}
           key={key}
         >
-          <ButtonBase className="button" onClick={() => pressButton(key)} />
+          <ButtonBase
+            className="button"
+            onClick={() => makeFretboardSelection(key)}
+          />
         </div>
       );
     }
@@ -50,7 +53,7 @@ const FretBoard = props => {
         <div className="fret bottom-fret" key={key}>
           <ButtonBase
             className="button bottom-button"
-            onClick={() => pressButton(key)}
+            onClick={() => makeFretboardSelection(key)}
           />
         </div>
       );
@@ -111,7 +114,7 @@ FretBoard.propTypes = {
     severity: PropTypes.string,
     text: PropTypes.string
   }),
-  pressButton: PropTypes.func
+  makeFretboardSelection: PropTypes.func
 };
 
 FretBoard.defaultProps = {
@@ -120,7 +123,7 @@ FretBoard.defaultProps = {
     severity: "info",
     text: "Begin!"
   }),
-  pressButton: () => {}
+  makeFretboardSelection: () => {}
 };
 
 export default FretBoard;

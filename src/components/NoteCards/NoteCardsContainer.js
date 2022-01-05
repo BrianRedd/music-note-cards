@@ -21,63 +21,104 @@ import FretBoard from "./FretBoard";
 const NoteCardsContainer = props => {
   const { settings } = props;
 
-  const [pressedValue, setPressedValue] = useState("");
-  const [notes, setNotes] = useState([]);
-  const [selectedNotes, setSelectedNotes] = useState([]);
-  const [randomNote, setRandomNote] = useState({});
-  const [numberCorrect, setNumberCorrect] = useState(0);
-  const [numberWrong, setNumberWrong] = useState(0);
+  const [noteTestPool, setNoteTestPool] = useState([]);
+  const [completedTestNotes, setCompletedTestNotes] = useState([]);
+  const [currentNoteTest, setCurrentNoteTest] = useState({});
+  // const [numberCorrect, setNumberCorrect] = useState(0);
+  // const [numberWrong, setNumberWrong] = useState(0);
   const [alertSeverity, setAlertSeverity] = useState("info");
   const [alertText, setAlertText] = useState("Begin!");
 
+  /**
+   * @function useEffect
+   * @description sets up filtered list of notes to test against
+   */
   useEffect(() => {
-    if (!notes.length) {
+    if (!noteTestPool.length) {
       // TODO: create noteArray based on settings
-      let filteredNotes = [...availableNotes];
+      let filteredNotes = availableNotes.map(note => ({
+        ...note,
+        lastAttemptStatus: "untested",
+        numberOfAttempts: 0,
+        wrongGuesses: []
+      }));
       if (settings.instrument === "ukelele") {
         filteredNotes = filteredNotes.filter(note => !note.guitarOnly);
       }
-      setNotes(filteredNotes);
+      setNoteTestPool(filteredNotes);
     }
-  }, [notes, settings]);
+  }, [noteTestPool, settings]);
 
+  /**
+   * @function randomizeNextNote
+   * @description selects next note from remaining noteTestPool
+   */
   const randomizeNextNote = useCallback(() => {
-    const newNote = notes[Math.floor(Math.random() * notes.length)];
-    if (selectedNotes.includes(newNote.id)) {
-      randomizeNextNote();
-    }
-    setRandomNote(notes[Math.floor(Math.random() * notes.length)]);
-  }, [notes, selectedNotes]);
+    const randomValue = Math.floor(Math.random() * noteTestPool.length);
+    const newNote = noteTestPool[randomValue];
+    setCurrentNoteTest(newNote);
+  }, [noteTestPool]);
 
+  /**
+   * @function useEffect
+   * @description randomizes initial test note
+   */
   useEffect(() => {
-    if (notes.length && _.isEmpty(randomNote)) {
+    if (noteTestPool.length && _.isEmpty(currentNoteTest)) {
       randomizeNextNote();
     }
-  }, [notes, randomNote, randomizeNextNote]);
+  }, [noteTestPool, currentNoteTest, randomizeNextNote]);
 
-  const updateSelectedNotes = noteObject => {
-    // TODO: redo?
-    if (selectedNotes.length + 1 === notes.length) {
-      // eslint-disable-next-line no-console
-      console.log("DONE!");
-      setAlertSeverity("warning");
-      setAlertText("This Batch Complete!");
-      setSelectedNotes({});
-    } else if (!notes.includes(noteObject.id)) {
-      setSelectedNotes([...selectedNotes, noteObject.id]);
-    }
-  };
-
-  const pressButton = value => {
-    setPressedValue(value);
-    const isCorrect = randomNote?.tabValue === value;
+  /**
+   * @function makeFretboardSelection
+   * @description when fretboard selection is made, test against currentNoteTest,
+   * and update arrays based on success or failure
+   * @param {String} value
+   */
+  const makeFretboardSelection = value => {
+    const updatedNoteTestPool = [...noteTestPool];
+    const idx = noteTestPool
+      .map(note => note.tabValue)
+      .indexOf(currentNoteTest.tabValue);
+    const isCorrect = currentNoteTest?.tabValue === value;
+    // eslint-disable-next-line no-console
+    console.log("idx:", idx, "\nvalue:", value, "\nisCorrect:", isCorrect);
     if (isCorrect) {
-      updateSelectedNotes(randomNote);
-      setNumberCorrect(numberCorrect + 1);
+      const updatedCompletedTestNotes = [...completedTestNotes];
+      updatedCompletedTestNotes.push({
+        ...currentNoteTest,
+        lastAttemptStatus: "correct",
+        numberOfAttempts: (noteTestPool?.[idx]?.numberOfAttempts ?? 0) + 1
+      });
+      updatedNoteTestPool.splice(idx, 1);
+      // eslint-disable-next-line no-console
+      console.log(
+        "updatedCompletedTestNotes:",
+        updatedCompletedTestNotes,
+        "\nupdatedNoteTestPool:",
+        updatedNoteTestPool
+      );
+      setCompletedTestNotes(updatedCompletedTestNotes);
+      setNoteTestPool(updatedNoteTestPool);
       setAlertSeverity("success");
-      setAlertText(`${randomNote.name} is Correct!`);
+      setAlertText(`${currentNoteTest.name} is Correct!`);
     } else {
-      setNumberWrong(numberWrong + 1);
+      const wrongGuesses = updatedNoteTestPool[idx]?.wrongGuesses ?? [];
+      wrongGuesses.push(value);
+      updatedNoteTestPool[idx] = {
+        ...updatedNoteTestPool[idx],
+        lastAttemptStatus: "incorrect",
+        numberOfAttempts: (updatedNoteTestPool[idx]?.numberOfAttempts ?? 0) + 1,
+        wrongGuesses
+      };
+      // eslint-disable-next-line no-console
+      console.log(
+        "updatedNoteTestPool:",
+        updatedNoteTestPool,
+        "\nwrongGuesses:",
+        wrongGuesses
+      );
+      setNoteTestPool(updatedNoteTestPool);
       setAlertSeverity("error");
       setAlertText(
         `${
@@ -86,7 +127,7 @@ const NoteCardsContainer = props => {
               Number(value.split("-")[0])) %
               12
           ]
-        } is Incorrect! Should Be ${randomNote.name}`
+        } is Incorrect! Should Be ${currentNoteTest.name}`
       );
     }
     randomizeNextNote();
@@ -95,14 +136,17 @@ const NoteCardsContainer = props => {
   return (
     <Row data-test="container-note-cards" className="note-cards-container gx-0">
       <Col xs={4}>
-        {!_.isEmpty(randomNote) && (
+        {!_.isEmpty(currentNoteTest) && (
           <NoteStaff
-            pressedValue={pressedValue}
-            randomNote={randomNote}
+            currentNoteTest={currentNoteTest}
             stats={{
-              numberCorrect,
-              numberWrong,
-              numberRemaining: notes.length - selectedNotes.length
+              numberCorrect: (completedTestNotes ?? []).length,
+              numberWrong: _.sum(
+                (noteTestPool ?? []).map(
+                  note => (note.wrongGuesses ?? []).length
+                )
+              ),
+              numberRemaining: noteTestPool.length - completedTestNotes.length
             }}
           />
         )}
@@ -110,7 +154,7 @@ const NoteCardsContainer = props => {
       <Col xs={8}>
         <FretBoard
           settings={settings}
-          pressButton={pressButton}
+          makeFretboardSelection={makeFretboardSelection}
           alert={{
             severity: alertSeverity,
             text: alertText
