@@ -1,17 +1,19 @@
 /** @module appTypes.js */
 
-import { oneOf, shape, number, string, bool } from "prop-types";
+import { oneOf, shape, number, string, bool, arrayOf } from "prop-types";
 
 export const instrumentOptions = ["guitar", "ukelele"];
 
 export const settings = {
   types: shape({
     instrument: oneOf(instrumentOptions),
-    numberOfFrets: number
+    numberOfFrets: number,
+    excludeSharps: arrayOf(string)
   }),
   defaults: {
     instrument: instrumentOptions[0],
-    numberOfFrets: 7
+    numberOfFrets: 7,
+    excludeSharps: []
   }
 };
 

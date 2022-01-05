@@ -15,7 +15,8 @@ const MainContainer = () => {
   const settings = {
     ...allTypes.settings.defaults,
     instrument: "ukelele",
-    numberOfFrets: 7
+    numberOfFrets: 7,
+    excludedKeys: ["sharp"]
   };
   return (
     <div data-test="container-main">

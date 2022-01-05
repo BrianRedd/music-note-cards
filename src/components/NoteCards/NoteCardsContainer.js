@@ -24,8 +24,7 @@ const NoteCardsContainer = props => {
   const [noteTestPool, setNoteTestPool] = useState([]);
   const [completedTestNotes, setCompletedTestNotes] = useState([]);
   const [currentNoteTest, setCurrentNoteTest] = useState({});
-  // const [numberCorrect, setNumberCorrect] = useState(0);
-  // const [numberWrong, setNumberWrong] = useState(0);
+  const [randomNoteValue, setRandomNoteValue] = useState(-1);
   const [alertSeverity, setAlertSeverity] = useState("info");
   const [alertText, setAlertText] = useState("Begin!");
 
@@ -45,6 +44,11 @@ const NoteCardsContainer = props => {
       if (settings.instrument === "ukelele") {
         filteredNotes = filteredNotes.filter(note => !note.guitarOnly);
       }
+      if (settings.excludedKeys.length > 0) {
+        filteredNotes = filteredNotes.filter(
+          note => !settings.excludedKeys.includes(note.key)
+        );
+      }
       setNoteTestPool(filteredNotes);
     }
   }, [noteTestPool, settings]);
@@ -55,6 +59,7 @@ const NoteCardsContainer = props => {
    */
   const randomizeNextNote = useCallback(() => {
     const randomValue = Math.floor(Math.random() * noteTestPool.length);
+    setRandomNoteValue(randomValue);
     const newNote = noteTestPool[randomValue];
     setCurrentNoteTest(newNote);
   }, [noteTestPool]);
@@ -77,20 +82,27 @@ const NoteCardsContainer = props => {
    */
   const makeFretboardSelection = value => {
     const updatedNoteTestPool = [...noteTestPool];
-    const idx = noteTestPool
-      .map(note => note.tabValue)
-      .indexOf(currentNoteTest.tabValue);
     const isCorrect = currentNoteTest?.tabValue === value;
     // eslint-disable-next-line no-console
-    console.log("idx:", idx, "\nvalue:", value, "\nisCorrect:", isCorrect);
+    console.log(
+      "randomNoteValue:",
+      randomNoteValue,
+      "\nselected value:",
+      value,
+      "expected value:",
+      currentNoteTest?.tabValue,
+      "\nisCorrect:",
+      isCorrect
+    );
     if (isCorrect) {
       const updatedCompletedTestNotes = [...completedTestNotes];
       updatedCompletedTestNotes.push({
         ...currentNoteTest,
         lastAttemptStatus: "correct",
-        numberOfAttempts: (noteTestPool?.[idx]?.numberOfAttempts ?? 0) + 1
+        numberOfAttempts:
+          (noteTestPool?.[randomNoteValue]?.numberOfAttempts ?? 0) + 1
       });
-      updatedNoteTestPool.splice(idx, 1);
+      updatedNoteTestPool.splice(randomNoteValue, 1);
       // eslint-disable-next-line no-console
       console.log(
         "updatedCompletedTestNotes:",
@@ -103,12 +115,14 @@ const NoteCardsContainer = props => {
       setAlertSeverity("success");
       setAlertText(`${currentNoteTest.name} is Correct!`);
     } else {
-      const wrongGuesses = updatedNoteTestPool[idx]?.wrongGuesses ?? [];
+      const wrongGuesses =
+        updatedNoteTestPool[randomNoteValue]?.wrongGuesses ?? [];
       wrongGuesses.push(value);
-      updatedNoteTestPool[idx] = {
-        ...updatedNoteTestPool[idx],
+      updatedNoteTestPool[randomNoteValue] = {
+        ...updatedNoteTestPool[randomNoteValue],
         lastAttemptStatus: "incorrect",
-        numberOfAttempts: (updatedNoteTestPool[idx]?.numberOfAttempts ?? 0) + 1,
+        numberOfAttempts:
+          (updatedNoteTestPool[randomNoteValue]?.numberOfAttempts ?? 0) + 1,
         wrongGuesses
       };
       // eslint-disable-next-line no-console
@@ -146,7 +160,7 @@ const NoteCardsContainer = props => {
                   note => (note.wrongGuesses ?? []).length
                 )
               ),
-              numberRemaining: noteTestPool.length - completedTestNotes.length
+              numberRemaining: noteTestPool.length
             }}
           />
         )}
