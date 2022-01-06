@@ -17,6 +17,10 @@ export const settings = {
   }
 };
 
+/*
+NOTE STATE
+----------*/
+
 export const note = {
   types: shape({
     id: string,
@@ -35,5 +39,22 @@ export const note = {
     ledgerLine: null,
     key: "",
     tabValue: ""
+  }
+};
+
+/**
+ * @const noteState
+ * @description Types for noteState Redux store
+ */
+export const noteState = {
+  types: shape({
+    allNotes: arrayOf(note),
+    activeNotes: arrayOf(note),
+    completedNotes: arrayOf(note)
+  }),
+  defaults: {
+    allNotes: [],
+    activeNotes: [],
+    completedNotes: []
   }
 };
