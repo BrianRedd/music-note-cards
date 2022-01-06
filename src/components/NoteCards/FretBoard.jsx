@@ -15,7 +15,7 @@ import "./styles/fretboard.scss";
  * @returns {React.Component} - Rendered component.
  */
 const FretBoard = props => {
-  const { settings, makeFretboardSelection, alert } = props;
+  const { settings, makeFretboardSelection, alert, setSettingsOpen } = props;
 
   const Frets = memo(fretProps => {
     const { stringNumber } = fretProps;
@@ -91,8 +91,7 @@ const FretBoard = props => {
             color="inherit"
             size="small"
             onClick={() => {
-              // eslint-disable-next-line no-console
-              console.log("open settings!");
+              setSettingsOpen(true);
             }}
           >
             <span className="fas fa-cog fa-2x" />
@@ -114,7 +113,8 @@ FretBoard.propTypes = {
     severity: PropTypes.string,
     text: PropTypes.string
   }),
-  makeFretboardSelection: PropTypes.func
+  makeFretboardSelection: PropTypes.func,
+  setSettingsOpen: PropTypes.func
 };
 
 FretBoard.defaultProps = {
@@ -123,7 +123,8 @@ FretBoard.defaultProps = {
     severity: "info",
     text: "Begin!"
   }),
-  makeFretboardSelection: () => {}
+  makeFretboardSelection: () => {},
+  setSettingsOpen: () => {}
 };
 
 export default FretBoard;

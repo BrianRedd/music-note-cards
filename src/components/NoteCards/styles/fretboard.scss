@@ -5,11 +5,12 @@ $fret-dimension: 50px;
 $string-size: 2px solid black;
 
 .section-container {
+  height: 100%;
   border: 1px solid black;
 }
 
 .fretboard-container {
-  height: 100%;
+  height: calc(100% - 48px);
   display: flex;
   justify-content: center;
   align-items: center;

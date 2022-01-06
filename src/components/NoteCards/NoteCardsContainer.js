@@ -1,7 +1,9 @@
 /** @module NoteCardsContainer */
 
 import React, { useState, useEffect, useCallback } from "react";
+import PropTypes from "prop-types";
 import { Row, Col } from "reactstrap";
+import { Button } from "@mui/material";
 import _ from "lodash";
 
 import * as allTypes from "../../types/appTypes";
@@ -19,7 +21,7 @@ import FretBoard from "./FretBoard";
  * @returns {React.Component} - Rendered component.
  */
 const NoteCardsContainer = props => {
-  const { settings } = props;
+  const { settings, setSettingsOpen, testComplete, setTestComplete } = props;
 
   const [noteTestPool, setNoteTestPool] = useState([]);
   const [completedTestNotes, setCompletedTestNotes] = useState([]);
@@ -27,52 +29,56 @@ const NoteCardsContainer = props => {
   const [randomNoteValue, setRandomNoteValue] = useState(-1);
   const [alertSeverity, setAlertSeverity] = useState("info");
   const [alertText, setAlertText] = useState("Begin!");
+  const [theseSettings, setTheseSettings] = useState(settings);
 
   /**
    * @function useEffect
    * @description sets up filtered list of notes to test against
    */
   useEffect(() => {
-    if (!noteTestPool.length) {
-      // TODO: create noteArray based on settings
+    if (!testComplete && (!noteTestPool.length || settings !== theseSettings)) {
       let filteredNotes = availableNotes.map(note => ({
         ...note,
         lastAttemptStatus: "untested",
         numberOfAttempts: 0,
         wrongGuesses: []
       }));
-      if (settings.instrument === "ukelele") {
+      // number of frets
+      filteredNotes = filteredNotes.filter(
+        note => Number(note.tabValue.split("-")[0]) <= settings?.numberOfFrets
+      );
+      // instruments
+      if (settings?.instrument === "ukelele") {
         filteredNotes = filteredNotes.filter(note => !note.guitarOnly);
       }
-      if (settings.excludedKeys.length > 0) {
+      // keys
+      if ((settings?.excludedKeys ?? []).length > 0) {
         filteredNotes = filteredNotes.filter(
-          note => !settings.excludedKeys.includes(note.key)
+          note => !(settings?.excludedKeys ?? []).includes(note.key)
         );
       }
       setNoteTestPool(filteredNotes);
+      setTheseSettings(settings);
+      // eslint-disable-next-line no-console
+      console.log("initial filteredNotes:", filteredNotes);
     }
-  }, [noteTestPool, settings]);
+  }, [noteTestPool, settings, theseSettings, setTheseSettings, testComplete]);
+
+  const generateRandomValue = max => Math.floor(Math.random() * max);
 
   /**
    * @function randomizeNextNote
    * @description selects next note from remaining noteTestPool
    */
   const randomizeNextNote = useCallback(() => {
-    const randomValue = Math.floor(Math.random() * noteTestPool.length);
+    let randomValue = generateRandomValue(noteTestPool.length);
+    if (noteTestPool[randomValue].id === currentNoteTest.id) {
+      randomValue = generateRandomValue(noteTestPool.length);
+    }
     setRandomNoteValue(randomValue);
     const newNote = noteTestPool[randomValue];
     setCurrentNoteTest(newNote);
-  }, [noteTestPool]);
-
-  /**
-   * @function useEffect
-   * @description randomizes initial test note
-   */
-  useEffect(() => {
-    if (noteTestPool.length && _.isEmpty(currentNoteTest)) {
-      randomizeNextNote();
-    }
-  }, [noteTestPool, currentNoteTest, randomizeNextNote]);
+  }, [noteTestPool, currentNoteTest]);
 
   /**
    * @function makeFretboardSelection
@@ -81,19 +87,10 @@ const NoteCardsContainer = props => {
    * @param {String} value
    */
   const makeFretboardSelection = value => {
+    // eslint-disable-next-line no-console
+    console.log("\nnoteTestPool:", noteTestPool);
     const updatedNoteTestPool = [...noteTestPool];
     const isCorrect = currentNoteTest?.tabValue === value;
-    // eslint-disable-next-line no-console
-    console.log(
-      "randomNoteValue:",
-      randomNoteValue,
-      "\nselected value:",
-      value,
-      "expected value:",
-      currentNoteTest?.tabValue,
-      "\nisCorrect:",
-      isCorrect
-    );
     if (isCorrect) {
       const updatedCompletedTestNotes = [...completedTestNotes];
       updatedCompletedTestNotes.push({
@@ -103,13 +100,6 @@ const NoteCardsContainer = props => {
           (noteTestPool?.[randomNoteValue]?.numberOfAttempts ?? 0) + 1
       });
       updatedNoteTestPool.splice(randomNoteValue, 1);
-      // eslint-disable-next-line no-console
-      console.log(
-        "updatedCompletedTestNotes:",
-        updatedCompletedTestNotes,
-        "\nupdatedNoteTestPool:",
-        updatedNoteTestPool
-      );
       setCompletedTestNotes(updatedCompletedTestNotes);
       setNoteTestPool(updatedNoteTestPool);
       setAlertSeverity("success");
@@ -125,13 +115,6 @@ const NoteCardsContainer = props => {
           (updatedNoteTestPool[randomNoteValue]?.numberOfAttempts ?? 0) + 1,
         wrongGuesses
       };
-      // eslint-disable-next-line no-console
-      console.log(
-        "updatedNoteTestPool:",
-        updatedNoteTestPool,
-        "\nwrongGuesses:",
-        wrongGuesses
-      );
       setNoteTestPool(updatedNoteTestPool);
       setAlertSeverity("error");
       setAlertText(
@@ -144,13 +127,21 @@ const NoteCardsContainer = props => {
         } is Incorrect! Should Be ${currentNoteTest.name}`
       );
     }
-    randomizeNextNote();
+    // eslint-disable-next-line no-console
+    console.log("updatedNoteTestPool:", updatedNoteTestPool);
+    if (updatedNoteTestPool.length === 0) {
+      setTestComplete(true);
+      setAlertSeverity("success");
+      setAlertText("Test Complete!");
+    } else {
+      randomizeNextNote();
+    }
   };
 
   return (
     <Row data-test="container-note-cards" className="note-cards-container gx-0">
       <Col xs={4}>
-        {!_.isEmpty(currentNoteTest) && (
+        {!_.isEmpty(currentNoteTest) ? (
           <NoteStaff
             currentNoteTest={currentNoteTest}
             stats={{
@@ -163,6 +154,12 @@ const NoteCardsContainer = props => {
               numberRemaining: noteTestPool.length
             }}
           />
+        ) : (
+          <div className="start-button-container">
+            <Button variant="contained" onClick={() => randomizeNextNote()}>
+              Begin!
+            </Button>
+          </div>
         )}
       </Col>
       <Col xs={8}>
@@ -173,6 +170,7 @@ const NoteCardsContainer = props => {
             severity: alertSeverity,
             text: alertText
           }}
+          setSettingsOpen={setSettingsOpen}
         />
       </Col>
     </Row>
@@ -180,11 +178,17 @@ const NoteCardsContainer = props => {
 };
 
 NoteCardsContainer.propTypes = {
-  settings: allTypes.settings.types
+  settings: allTypes.settings?.types,
+  testComplete: PropTypes.bool,
+  setTestComplete: PropTypes.func,
+  setSettingsOpen: PropTypes.func
 };
 
 NoteCardsContainer.defaultProps = {
-  settings: allTypes.settings.defaults
+  settings: allTypes.settings?.defaults,
+  testComplete: false,
+  setTestComplete: () => {},
+  setSettingsOpen: () => {}
 };
 
 export default NoteCardsContainer;

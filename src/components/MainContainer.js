@@ -1,10 +1,11 @@
 /** @module MainContainer */
 
-import React from "react";
+import React, { useState } from "react";
 
 import * as allTypes from "../types/appTypes";
 
 import NoteCardsContainer from "./NoteCards/NoteCardsContainer";
+import SettingsDialogContainer from "./Modals/Settings/SettingsDialogContainer";
 
 /**
  * @function MainContainer
@@ -12,15 +13,25 @@ import NoteCardsContainer from "./NoteCards/NoteCardsContainer";
  * @returns {React.Component} - Rendered component.
  */
 const MainContainer = () => {
-  const settings = {
-    ...allTypes.settings.defaults,
-    instrument: "ukelele",
-    numberOfFrets: 7,
-    excludedKeys: ["sharp"]
-  };
+  const [isSettingsOpen, setSettingsOpen] = useState(true);
+  const [settings, setSettings] = useState(allTypes.settings.defaults);
+  const [testComplete, setTestComplete] = useState(false);
+
   return (
     <div data-test="container-main">
-      <NoteCardsContainer settings={settings} />
+      <NoteCardsContainer
+        settings={settings}
+        setSettingsOpen={setSettingsOpen}
+        testComplete={testComplete}
+        setTestComplete={setTestComplete}
+      />
+      <SettingsDialogContainer
+        isSettingsOpen={isSettingsOpen}
+        setSettingsOpen={setSettingsOpen}
+        settings={settings}
+        setSettings={setSettings}
+        setTestComplete={setTestComplete}
+      />
     </div>
   );
 };

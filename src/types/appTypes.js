@@ -8,12 +8,12 @@ export const settings = {
   types: shape({
     instrument: oneOf(instrumentOptions),
     numberOfFrets: number,
-    excludeSharps: arrayOf(string)
+    excludedKeys: arrayOf(string)
   }),
   defaults: {
-    instrument: instrumentOptions[0],
-    numberOfFrets: 7,
-    excludeSharps: []
+    instrument: instrumentOptions[1],
+    numberOfFrets: 3,
+    excludedKeys: ["sharp"]
   }
 };
 
