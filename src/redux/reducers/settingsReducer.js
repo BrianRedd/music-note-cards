@@ -15,8 +15,13 @@ import * as allTypes from "../../types/appTypes";
 const settingsState = (state = allTypes.settingsState.defaults, action) => {
   const { type, payload } = action;
   switch (type) {
-    case actionTypes.PLACEHOLDER:
-      return { ...state, temp: payload };
+    case actionTypes.UPDATE_SETTINGS:
+      return { ...state, settings: payload };
+    case actionTypes.TOGGLE_SETTINGS_MODAL:
+      return {
+        ...state,
+        isModalOpen: !state.isModalOpen
+      };
     default:
       return state;
   }

@@ -14,22 +14,14 @@ const logger = createLogger({ collapsed: true, diff: true });
  * @constant ConfigureStore
  * @description generates application Redux store
  */
-const ConfigureStore = () => {
-  const storeTemplate = createStore(
-    combineReducers({
-      noteState,
-      gameState,
-      settingsState
-    }),
-    /* eslint-disable no-underscore-dangle */
-    window.__REDUX_DEVTOOLS_EXTENSION__ &&
-      window.__REDUX_DEVTOOLS_EXTENSION__(),
-    /* eslint-enable no-underscore-dangle */
-    applyMiddleware(thunk, logger)
-  );
-  return storeTemplate;
-};
-
-const store = ConfigureStore();
+const store = createStore(
+  combineReducers({
+    noteState,
+    gameState,
+    settingsState
+  }),
+  undefined,
+  applyMiddleware(thunk, logger)
+);
 
 export default store;

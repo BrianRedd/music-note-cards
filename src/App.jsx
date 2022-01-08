@@ -1,13 +1,20 @@
-import React from "react";
+/** @module App */
 
-import MainContainer from "./components/MainContainer";
+import React from "react";
+import { Provider } from "react-redux";
+
+import store from "./redux/configureStore";
 
 import "./styles/App.scss";
 
+import MainContainer from "./components/MainContainer";
+
 const App = () => (
-  <div data-test="container-app" className="app-container">
-    <MainContainer />
-  </div>
+  <Provider store={store}>
+    <div data-test="container-app" className="app-container">
+      <MainContainer />
+    </div>
+  </Provider>
 );
 
 export default App;

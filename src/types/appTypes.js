@@ -2,24 +2,15 @@
 
 import { oneOf, shape, number, string, bool, arrayOf } from "prop-types";
 
-export const instrumentOptions = ["guitar", "ukelele"];
-
-export const settings = {
-  types: shape({
-    instrument: oneOf(instrumentOptions),
-    numberOfFrets: number,
-    excludedKeys: arrayOf(string)
-  }),
-  defaults: {
-    instrument: instrumentOptions[1],
-    numberOfFrets: 3,
-    excludedKeys: ["sharp"]
-  }
+export const optionList = {
+  instruments: ["guitar", "ukelele"],
+  keys: ["", "sharp", "natural", "flat"]
 };
 
-/*
-NOTE STATE
-----------*/
+/**
+ * @const noteState
+ * @description Types for noteState Redux store
+ */
 
 export const note = {
   types: shape({
@@ -28,7 +19,7 @@ export const note = {
     staffValue: number,
     guitarOnly: bool,
     ledgerLine: number,
-    key: oneOf(["", "sharp", "natural", "flat"]),
+    key: oneOf(optionList.keys),
     tabValue: string
   }),
   defaults: {
@@ -41,20 +32,66 @@ export const note = {
     tabValue: ""
   }
 };
-
-/**
- * @const noteState
- * @description Types for noteState Redux store
- */
 export const noteState = {
   types: shape({
-    allNotes: arrayOf(note),
-    activeNotes: arrayOf(note),
-    completedNotes: arrayOf(note)
+    allNotes: arrayOf(note.types),
+    testPool: arrayOf(note.types),
+    completedPool: arrayOf(note.types)
   }),
   defaults: {
     allNotes: [],
-    activeNotes: [],
-    completedNotes: []
+    testPool: [],
+    completedPool: []
+  }
+};
+
+/**
+ * @const gameState
+ * @description Types for gameState Redux store
+ */
+export const gameState = {
+  types: shape({
+    testStatus: string,
+    currentTestNote: note.types,
+    message: shape({
+      severity: string,
+      text: string
+    })
+  }),
+  defaults: {
+    testStatus: "new",
+    currentTestNote: note.defaults,
+    message: {
+      severity: "info",
+      text: "New Game"
+    }
+  }
+};
+
+/**
+ * @const settingsState
+ * @description Types for settingsState Redux store
+ */
+
+export const settings = {
+  types: shape({
+    instrument: oneOf(optionList.instruments),
+    numberOfFrets: number,
+    excludedKeys: arrayOf(string)
+  }),
+  defaults: {
+    instrument: optionList.instruments[1],
+    numberOfFrets: 3,
+    excludedKeys: ["sharp"]
+  }
+};
+export const settingsState = {
+  types: shape({
+    settings: settings.types,
+    isModalOpen: bool
+  }),
+  defaults: {
+    settings: settings.defaults,
+    isModalOpen: true
   }
 };
