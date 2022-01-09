@@ -2,10 +2,7 @@
 
 import { oneOf, shape, number, string, bool, arrayOf } from "prop-types";
 
-export const optionList = {
-  instruments: ["guitar", "ukelele"],
-  keys: ["", "sharp", "natural", "flat"]
-};
+import { optionList } from "../data/constants";
 
 /**
  * @const noteState
@@ -51,18 +48,18 @@ export const noteState = {
  */
 export const gameState = {
   types: shape({
-    testStatus: string,
+    testStatus: oneOf(optionList.gameStatuses),
     currentTestNote: note.types,
     message: shape({
-      severity: string,
+      severity: oneOf(optionList.severities),
       text: string
     })
   }),
   defaults: {
-    testStatus: "new",
+    testStatus: optionList.gameStatuses[0],
     currentTestNote: note.defaults,
     message: {
-      severity: "info",
+      severity: optionList.severities[0],
       text: "New Game"
     }
   }
@@ -77,7 +74,7 @@ export const settings = {
   types: shape({
     instrument: oneOf(optionList.instruments),
     numberOfFrets: number,
-    excludedKeys: arrayOf(string)
+    excludedKeys: arrayOf(oneOf(optionList.keys))
   }),
   defaults: {
     instrument: optionList.instruments[1],

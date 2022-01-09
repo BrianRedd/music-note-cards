@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import _ from "lodash";
 import { Row, Col } from "reactstrap";
 import {
   Button,
@@ -20,6 +21,7 @@ import {
 } from "@mui/material";
 
 import * as allTypes from "../../../types/appTypes";
+import * as constant from "../../../data/constants";
 
 /**
  * @function SettingsDialogContainer
@@ -28,23 +30,29 @@ import * as allTypes from "../../../types/appTypes";
  */
 const SettingsDialogContainer = props => {
   const {
-    isSettingsOpen,
-    setSettingsOpen,
-    settings,
-    setSettings,
-    setTestComplete
+    settingsState,
+    toggleSettingsModal,
+    updateSettings,
+    setTestStatus,
+    resetSettings
   } = props;
 
-  const [instrument, setInstrument] = useState(settings?.instrument);
-  const [numberOfFrets, setNumberOfFrets] = useState(settings?.numberOfFrets);
-  const [excludeSharps, setExcludeSharps] = useState(
-    (settings?.excludedKeys ?? []).includes("sharp")
+  /**
+   * @description local state values for settings
+   */
+  const [instrument, setInstrument] = useState(
+    settingsState?.settings?.instrument
   );
-
+  const [numberOfFrets, setNumberOfFrets] = useState(
+    settingsState?.settings?.numberOfFrets
+  );
+  const [excludeSharps, setExcludeSharps] = useState(
+    (settingsState?.settings?.excludedKeys ?? []).includes(constant.KEY_SHARP)
+  );
   return (
     <Dialog
-      open={isSettingsOpen}
-      onClose={() => setSettingsOpen(!isSettingsOpen)}
+      open={settingsState?.isModalOpen}
+      onClose={toggleSettingsModal}
       fullWidth
     >
       <DialogTitle id="alert-dialog-title">
@@ -64,12 +72,12 @@ const SettingsDialogContainer = props => {
                 }}
               >
                 <FormControlLabel
-                  value="guitar"
+                  value={constant.INSTRUMENT_GUITAR}
                   control={<Radio />}
                   label="Guitar"
                 />
                 <FormControlLabel
-                  value="ukelele"
+                  value={constant.INSTRUMENT_UKELELE}
                   control={<Radio />}
                   label="Baritone Ukelele"
                 />
@@ -85,9 +93,11 @@ const SettingsDialogContainer = props => {
                   setNumberOfFrets(event.target.value);
                 }}
               >
-                <MenuItem value={3}>Three</MenuItem>
-                <MenuItem value={5}>Five</MenuItem>
-                <MenuItem value={7}>Seven</MenuItem>
+                {(constant.optionList.numberOfFrets ?? []).map(option => (
+                  <MenuItem key={option} value={Number(option.split("_")[0])}>
+                    {option.split("_")[1]}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Col>
@@ -109,19 +119,36 @@ const SettingsDialogContainer = props => {
           </Col>
         </Row>
       </DialogContent>
-      <DialogActions>
+      <DialogActions className="d-flex justify-content-between">
+        <Button
+          onClick={() => {
+            setTestStatus(constant.GAME_STATUS_NEW);
+            resetSettings();
+            toggleSettingsModal();
+          }}
+        >
+          Reset to Defaults
+        </Button>
         <Button
           variant="outlined"
           onClick={() => {
             const excludedKeys = [];
-            if (excludeSharps) excludedKeys.push("sharp");
-            setSettings({
+            if (excludeSharps) excludedKeys.push(constant.KEY_SHARP);
+            const updatedSettings = {
               instrument,
               numberOfFrets,
               excludedKeys
-            });
-            setTestComplete(false);
-            setSettingsOpen(!isSettingsOpen);
+            };
+            if (
+              !_.isEqual(
+                { ...settingsState.settings, ...updatedSettings },
+                settingsState?.settings
+              )
+            ) {
+              setTestStatus(constant.GAME_STATUS_NEW);
+            }
+            updateSettings(updatedSettings);
+            toggleSettingsModal();
           }}
         >
           Save and Begin
@@ -132,19 +159,19 @@ const SettingsDialogContainer = props => {
 };
 
 SettingsDialogContainer.propTypes = {
-  settings: allTypes.settings?.types,
-  isSettingsOpen: PropTypes.bool,
-  setSettings: PropTypes.func,
-  setSettingsOpen: PropTypes.func,
-  setTestComplete: PropTypes.func
+  settingsState: allTypes.settingsState.types,
+  toggleSettingsModal: PropTypes.func,
+  updateSettings: PropTypes.func,
+  setTestStatus: PropTypes.func,
+  resetSettings: PropTypes.func
 };
 
 SettingsDialogContainer.defaultProps = {
-  settings: allTypes.settings?.defaults,
-  isSettingsOpen: false,
-  setSettings: () => {},
-  setSettingsOpen: () => {},
-  setTestComplete: () => {}
+  settingsState: allTypes.settingsState.defaults,
+  toggleSettingsModal: () => {},
+  updateSettings: () => {},
+  setTestStatus: () => {},
+  resetSettings: () => {}
 };
 
 export default SettingsDialogContainer;

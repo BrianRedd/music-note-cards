@@ -21,7 +21,8 @@ import FretBoard from "./FretBoard";
  * @returns {React.Component} - Rendered component.
  */
 const NoteCardsContainer = props => {
-  const { settings, setSettingsOpen, testComplete, setTestComplete } = props;
+  const { settings, toggleSettingsModal, testComplete, setTestComplete } =
+    props;
 
   const [noteTestPool, setNoteTestPool] = useState([]);
   const [completedTestNotes, setCompletedTestNotes] = useState([]);
@@ -170,7 +171,7 @@ const NoteCardsContainer = props => {
             severity: alertSeverity,
             text: alertText
           }}
-          setSettingsOpen={setSettingsOpen}
+          toggleSettingsModal={toggleSettingsModal}
         />
       </Col>
     </Row>
@@ -181,14 +182,14 @@ NoteCardsContainer.propTypes = {
   settings: allTypes.settings?.types,
   testComplete: PropTypes.bool,
   setTestComplete: PropTypes.func,
-  setSettingsOpen: PropTypes.func
+  toggleSettingsModal: PropTypes.func
 };
 
 NoteCardsContainer.defaultProps = {
   settings: allTypes.settings?.defaults,
   testComplete: false,
   setTestComplete: () => {},
-  setSettingsOpen: () => {}
+  toggleSettingsModal: () => {}
 };
 
 export default NoteCardsContainer;

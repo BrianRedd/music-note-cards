@@ -15,7 +15,8 @@ import "./styles/fretboard.scss";
  * @returns {React.Component} - Rendered component.
  */
 const FretBoard = props => {
-  const { settings, makeFretboardSelection, alert, setSettingsOpen } = props;
+  const { settings, makeFretboardSelection, alert, toggleSettingsModal } =
+    props;
 
   const Frets = memo(fretProps => {
     const { stringNumber } = fretProps;
@@ -90,9 +91,7 @@ const FretBoard = props => {
           <ButtonBase
             color="inherit"
             size="small"
-            onClick={() => {
-              setSettingsOpen(true);
-            }}
+            onClick={toggleSettingsModal}
           >
             <span className="fas fa-cog fa-2x" />
           </ButtonBase>
@@ -114,7 +113,7 @@ FretBoard.propTypes = {
     text: PropTypes.string
   }),
   makeFretboardSelection: PropTypes.func,
-  setSettingsOpen: PropTypes.func
+  toggleSettingsModal: PropTypes.func
 };
 
 FretBoard.defaultProps = {
@@ -124,7 +123,7 @@ FretBoard.defaultProps = {
     text: "Begin!"
   }),
   makeFretboardSelection: () => {},
-  setSettingsOpen: () => {}
+  toggleSettingsModal: () => {}
 };
 
 export default FretBoard;
