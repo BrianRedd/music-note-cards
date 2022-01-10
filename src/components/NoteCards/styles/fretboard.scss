@@ -18,7 +18,8 @@ $string-size: 2px solid black;
     padding-top: $fret-dimension / 2;
     .string {
       height: $fret-dimension;
-      background-color: burlywood;
+      background-position-x: right;
+      background-size: cover;
       border-right: $string-size;
       .fret {
         border-bottom: $string-size;

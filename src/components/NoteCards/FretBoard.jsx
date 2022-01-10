@@ -70,7 +70,13 @@ const FretBoard = props => {
       i += 1
     ) {
       strings.push(
-        <div className="string" key={i}>
+        <div
+          className="string"
+          key={i}
+          style={{
+            backgroundImage: `url(${process.env.PUBLIC_URL}/images/istockphoto-1083302826-170667a.jpg)`
+          }}
+        >
           <Frets stringNumber={i} />
         </div>
       );

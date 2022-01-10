@@ -1,8 +1,9 @@
 /** @module MainContainer */
 
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import _ from "lodash";
 
 import * as allTypes from "../types/appTypes";
 import actions from "../redux/Actions";
@@ -20,7 +21,8 @@ const mapDispatchToProps = {
   toggleSettingsModal: actions.toggleSettingsModal,
   updateSettings: actions.updateSettings,
   resetSettings: actions.resetSettings,
-  setTestStatus: actions.setTestStatus
+  setTestStatus: actions.setTestStatus,
+  initializeAllNotes: actions.initializeAllNotes
 };
 
 /**
@@ -36,8 +38,15 @@ const MainContainer = props => {
     toggleSettingsModal,
     updateSettings,
     resetSettings,
-    setTestStatus
+    setTestStatus,
+    initializeAllNotes
   } = props;
+
+  useEffect(() => {
+    if (_.isEmpty(noteState?.allNotes)) {
+      initializeAllNotes();
+    }
+  });
 
   return (
     <div data-test="container-main">
@@ -67,7 +76,8 @@ MainContainer.propTypes = {
   toggleSettingsModal: PropTypes.func,
   updateSettings: PropTypes.func,
   resetSettings: PropTypes.func,
-  setTestStatus: PropTypes.func
+  setTestStatus: PropTypes.func,
+  initializeAllNotes: PropTypes.func
 };
 
 MainContainer.defaultProps = {
@@ -77,7 +87,8 @@ MainContainer.defaultProps = {
   toggleSettingsModal: () => {},
   updateSettings: () => {},
   resetSettings: () => {},
-  setTestStatus: () => {}
+  setTestStatus: () => {},
+  initializeAllNotes: () => {}
 };
 
 export const MainContainerTest = MainContainer;

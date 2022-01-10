@@ -47,7 +47,9 @@ const SettingsDialogContainer = props => {
     settingsState?.settings?.numberOfFrets
   );
   const [excludeSharps, setExcludeSharps] = useState(
-    (settingsState?.settings?.excludedKeys ?? []).includes(constant.KEY_SHARP)
+    (settingsState?.settings?.excludedKeys ?? []).includes(
+      constant.KEY.SHARP.text
+    )
   );
   return (
     <Dialog
@@ -93,7 +95,7 @@ const SettingsDialogContainer = props => {
                   setNumberOfFrets(event.target.value);
                 }}
               >
-                {(constant.optionList.numberOfFrets ?? []).map(option => (
+                {(constant.OPTION_LIST.numberOfFrets ?? []).map(option => (
                   <MenuItem key={option} value={Number(option.split("_")[0])}>
                     {option.split("_")[1]}
                   </MenuItem>
@@ -133,7 +135,7 @@ const SettingsDialogContainer = props => {
           variant="outlined"
           onClick={() => {
             const excludedKeys = [];
-            if (excludeSharps) excludedKeys.push(constant.KEY_SHARP);
+            if (excludeSharps) excludedKeys.push(constant.KEY.SHARP.text);
             const updatedSettings = {
               instrument,
               numberOfFrets,
@@ -151,7 +153,7 @@ const SettingsDialogContainer = props => {
             toggleSettingsModal();
           }}
         >
-          Save and Begin
+          Save
         </Button>
       </DialogActions>
     </Dialog>

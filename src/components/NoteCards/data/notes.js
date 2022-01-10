@@ -8,7 +8,7 @@ const availableNotes = [
     guitarOnly: false,
     ledgerLine: -1,
     key: null,
-    tabValue: "4-1"
+    tab: "4-1"
   },
   {
     id: "G-1",
@@ -17,7 +17,7 @@ const availableNotes = [
     guitarOnly: false,
     ledgerLine: null,
     key: null,
-    tabValue: "3-1"
+    tab: "3-1"
   },
   {
     id: "F-1",
@@ -26,7 +26,7 @@ const availableNotes = [
     guitarOnly: false,
     ledgerLine: null,
     key: null,
-    tabValue: "1-1"
+    tab: "1-1"
   },
   {
     id: "E-1",
@@ -35,7 +35,7 @@ const availableNotes = [
     guitarOnly: false,
     ledgerLine: null,
     key: null,
-    tabValue: "0-1"
+    tab: "0-1"
   },
   {
     id: "D-1",
@@ -44,7 +44,7 @@ const availableNotes = [
     guitarOnly: false,
     ledgerLine: null,
     key: null,
-    tabValue: "3-2"
+    tab: "3-2"
   },
   {
     id: "C-1",
@@ -53,7 +53,7 @@ const availableNotes = [
     guitarOnly: false,
     ledgerLine: null,
     key: null,
-    tabValue: "1-2"
+    tab: "1-2"
   },
   {
     id: "B-1",
@@ -62,7 +62,7 @@ const availableNotes = [
     guitarOnly: false,
     ledgerLine: null,
     key: null,
-    tabValue: "0-2"
+    tab: "0-2"
   },
   {
     id: "A-1",
@@ -71,7 +71,7 @@ const availableNotes = [
     guitarOnly: false,
     ledgerLine: null,
     key: null,
-    tabValue: "2-3"
+    tab: "2-3"
   },
   {
     id: "G-2",
@@ -80,7 +80,7 @@ const availableNotes = [
     guitarOnly: false,
     ledgerLine: null,
     key: null,
-    tabValue: "0-3"
+    tab: "0-3"
   },
   {
     id: "F-2",
@@ -89,7 +89,7 @@ const availableNotes = [
     guitarOnly: false,
     ledgerLine: null,
     key: null,
-    tabValue: "3-4"
+    tab: "3-4"
   },
   {
     id: "E-2",
@@ -98,7 +98,7 @@ const availableNotes = [
     guitarOnly: false,
     ledgerLine: null,
     key: null,
-    tabValue: "2-4"
+    tab: "2-4"
   },
   {
     id: "D-2",
@@ -107,7 +107,7 @@ const availableNotes = [
     guitarOnly: false,
     ledgerLine: null,
     key: null,
-    tabValue: "0-4"
+    tab: "0-4"
   },
   {
     id: "C-2",
@@ -116,7 +116,7 @@ const availableNotes = [
     guitarOnly: true,
     ledgerLine: 1,
     key: null,
-    tabValue: "3-5"
+    tab: "3-5"
   },
   {
     id: "B-2",
@@ -125,7 +125,7 @@ const availableNotes = [
     guitarOnly: true,
     ledgerLine: 1,
     key: null,
-    tabValue: "2-5"
+    tab: "2-5"
   },
   {
     id: "A-2",
@@ -134,7 +134,7 @@ const availableNotes = [
     guitarOnly: true,
     ledgerLine: 2,
     key: null,
-    tabValue: "0-5"
+    tab: "0-5"
   },
   {
     id: "G-3",
@@ -143,7 +143,7 @@ const availableNotes = [
     guitarOnly: true,
     ledgerLine: 2,
     key: null,
-    tabValue: "3-6"
+    tab: "3-6"
   },
   {
     id: "F-3",
@@ -152,7 +152,7 @@ const availableNotes = [
     guitarOnly: true,
     ledgerLine: 3,
     key: null,
-    tabValue: "1-6"
+    tab: "1-6"
   },
   {
     id: "E-3",
@@ -161,7 +161,7 @@ const availableNotes = [
     guitarOnly: true,
     ledgerLine: 3,
     key: null,
-    tabValue: "0-6"
+    tab: "0-6"
   },
   {
     id: "A#-0",
@@ -170,7 +170,7 @@ const availableNotes = [
     guitarOnly: false,
     ledgerLine: -1,
     key: "sharp",
-    tabValue: "5-1"
+    tab: "5-1"
   },
   {
     id: "F#-1",
@@ -179,7 +179,7 @@ const availableNotes = [
     guitarOnly: false,
     ledgerLine: null,
     key: "sharp",
-    tabValue: "2-1"
+    tab: "2-1"
   },
   {
     id: "C#-1",
@@ -188,7 +188,7 @@ const availableNotes = [
     guitarOnly: false,
     ledgerLine: null,
     key: "sharp",
-    tabValue: "2-2"
+    tab: "2-2"
   },
   {
     id: "A#-1",
@@ -197,7 +197,7 @@ const availableNotes = [
     guitarOnly: false,
     ledgerLine: null,
     key: "sharp",
-    tabValue: "3-3"
+    tab: "3-3"
   },
   {
     id: "F#-2",
@@ -206,7 +206,7 @@ const availableNotes = [
     guitarOnly: false,
     ledgerLine: null,
     key: "sharp",
-    tabValue: "4-4"
+    tab: "4-4"
   },
   {
     id: "C#-2",
@@ -215,7 +215,7 @@ const availableNotes = [
     guitarOnly: true,
     ledgerLine: 1,
     key: "sharp",
-    tabValue: "4-5"
+    tab: "4-5"
   },
   {
     id: "A#-2",
@@ -224,7 +224,7 @@ const availableNotes = [
     guitarOnly: true,
     ledgerLine: 2,
     key: "sharp",
-    tabValue: "1-5"
+    tab: "1-5"
   },
   {
     id: "F#-3",
@@ -233,7 +233,7 @@ const availableNotes = [
     guitarOnly: true,
     ledgerLine: 3,
     key: "sharp",
-    tabValue: "2-6"
+    tab: "2-6"
   }
 ];
 

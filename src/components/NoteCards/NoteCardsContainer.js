@@ -7,7 +7,7 @@ import { Button } from "@mui/material";
 import _ from "lodash";
 
 import * as allTypes from "../../types/appTypes";
-import * as constant from "./data/constants";
+// import * as constant from "./data/constants";
 import availableNotes from "./data/notes";
 
 import "./styles/notecardscontainer.scss";
@@ -21,8 +21,12 @@ import FretBoard from "./FretBoard";
  * @returns {React.Component} - Rendered component.
  */
 const NoteCardsContainer = props => {
-  const { settings, toggleSettingsModal, testComplete, setTestComplete } =
-    props;
+  const {
+    settingsState: { settings },
+    toggleSettingsModal,
+    testComplete,
+    setTestComplete
+  } = props;
 
   const [noteTestPool, setNoteTestPool] = useState([]);
   const [completedTestNotes, setCompletedTestNotes] = useState([]);
@@ -46,7 +50,7 @@ const NoteCardsContainer = props => {
       }));
       // number of frets
       filteredNotes = filteredNotes.filter(
-        note => Number(note.tabValue.split("-")[0]) <= settings?.numberOfFrets
+        note => Number(note.tab.split("-")[0]) <= settings?.numberOfFrets
       );
       // instruments
       if (settings?.instrument === "ukelele") {
@@ -91,7 +95,7 @@ const NoteCardsContainer = props => {
     // eslint-disable-next-line no-console
     console.log("\nnoteTestPool:", noteTestPool);
     const updatedNoteTestPool = [...noteTestPool];
-    const isCorrect = currentNoteTest?.tabValue === value;
+    const isCorrect = currentNoteTest?.tab === value;
     if (isCorrect) {
       const updatedCompletedTestNotes = [...completedTestNotes];
       updatedCompletedTestNotes.push({
@@ -118,18 +122,16 @@ const NoteCardsContainer = props => {
       };
       setNoteTestPool(updatedNoteTestPool);
       setAlertSeverity("error");
-      setAlertText(
-        `${
-          constant.NOTE_PROGRESSION[
-            (constant.START_NOTE_BY_STRING[value.split("-")[1]] +
-              Number(value.split("-")[0])) %
-              12
-          ]
-        } is Incorrect! Should Be ${currentNoteTest.name}`
-      );
+      // setAlertText(
+      //   `${
+      //     constant.NOTE_PROGRESSION[
+      //       (constant.START_NOTE_BY_STRING[value.split("-")[1]] +
+      //         Number(value.split("-")[0])) %
+      //         12
+      //     ]
+      //   } is Incorrect! Should Be ${currentNoteTest.name}`
+      // );
     }
-    // eslint-disable-next-line no-console
-    console.log("updatedNoteTestPool:", updatedNoteTestPool);
     if (updatedNoteTestPool.length === 0) {
       setTestComplete(true);
       setAlertSeverity("success");
@@ -179,14 +181,14 @@ const NoteCardsContainer = props => {
 };
 
 NoteCardsContainer.propTypes = {
-  settings: allTypes.settings?.types,
+  settingsState: allTypes.settingsState.types,
   testComplete: PropTypes.bool,
   setTestComplete: PropTypes.func,
   toggleSettingsModal: PropTypes.func
 };
 
 NoteCardsContainer.defaultProps = {
-  settings: allTypes.settings?.defaults,
+  settingsState: allTypes.settingsState.defaults,
   testComplete: false,
   setTestComplete: () => {},
   toggleSettingsModal: () => {}

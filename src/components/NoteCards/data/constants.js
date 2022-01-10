@@ -22,27 +22,3 @@ export const INSTRUMENT = {
     positionMarkerArray: POSITION_MARKERS_U
   }
 };
-
-export const NOTE_PROGRESSION = [
-  "A", // 0
-  "A#", // 1
-  "B", // 2
-  "C", // 3
-  "C#", // 4
-  "D", // 5
-  "D#", // 6
-  "E", // 7
-  "F", // 8
-  "F#", // 9
-  "G", // 10
-  "G#" // 11
-];
-
-export const START_NOTE_BY_STRING = {
-  1: 7,
-  2: 2,
-  3: 10,
-  4: 5,
-  5: 0,
-  6: 7
-};

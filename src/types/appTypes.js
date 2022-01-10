@@ -2,7 +2,7 @@
 
 import { oneOf, shape, number, string, bool, arrayOf } from "prop-types";
 
-import { optionList } from "../data/constants";
+import { OPTION_LIST } from "../data/constants";
 
 /**
  * @const noteState
@@ -16,8 +16,9 @@ export const note = {
     staffValue: number,
     guitarOnly: bool,
     ledgerLine: number,
-    key: oneOf(optionList.keys),
-    tabValue: string
+    key: oneOf(OPTION_LIST.keys),
+    stringValue: number,
+    tabValue: number
   }),
   defaults: {
     id: "",
@@ -26,7 +27,8 @@ export const note = {
     guitarOnly: false,
     ledgerLine: null,
     key: "",
-    tabValue: ""
+    stringValue: null,
+    tabValue: null
   }
 };
 export const noteState = {
@@ -48,18 +50,18 @@ export const noteState = {
  */
 export const gameState = {
   types: shape({
-    testStatus: oneOf(optionList.gameStatuses),
+    testStatus: oneOf(OPTION_LIST.gameStatuses),
     currentTestNote: note.types,
     message: shape({
-      severity: oneOf(optionList.severities),
+      severity: oneOf(OPTION_LIST.severities),
       text: string
     })
   }),
   defaults: {
-    testStatus: optionList.gameStatuses[0],
+    testStatus: OPTION_LIST.gameStatuses[0],
     currentTestNote: note.defaults,
     message: {
-      severity: optionList.severities[0],
+      severity: OPTION_LIST.severities[0],
       text: "New Game"
     }
   }
@@ -72,14 +74,14 @@ export const gameState = {
 
 export const settings = {
   types: shape({
-    instrument: oneOf(optionList.instruments),
+    instrument: oneOf(OPTION_LIST.instruments),
     numberOfFrets: number,
-    excludedKeys: arrayOf(oneOf(optionList.keys))
+    excludedKeys: arrayOf(oneOf(OPTION_LIST.keys))
   }),
   defaults: {
-    instrument: optionList.instruments[1],
-    numberOfFrets: 3,
-    excludedKeys: ["sharp"]
+    instrument: OPTION_LIST.instruments[0],
+    numberOfFrets: 7,
+    excludedKeys: []
   }
 };
 export const settingsState = {
