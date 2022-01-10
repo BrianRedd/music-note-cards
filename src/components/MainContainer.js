@@ -22,7 +22,8 @@ const mapDispatchToProps = {
   updateSettings: actions.updateSettings,
   resetSettings: actions.resetSettings,
   setTestStatus: actions.setTestStatus,
-  initializeAllNotes: actions.initializeAllNotes
+  initializeAllNotes: actions.initializeAllNotes,
+  startGame: actions.startGame
 };
 
 /**
@@ -39,7 +40,8 @@ const MainContainer = props => {
     updateSettings,
     resetSettings,
     setTestStatus,
-    initializeAllNotes
+    initializeAllNotes,
+    startGame
   } = props;
 
   useEffect(() => {
@@ -55,6 +57,7 @@ const MainContainer = props => {
         gameState={gameState}
         settingsState={settingsState}
         toggleSettingsModal={toggleSettingsModal}
+        startGame={startGame}
       />
       <SettingsDialogContainer
         noteState={noteState}
@@ -77,7 +80,8 @@ MainContainer.propTypes = {
   updateSettings: PropTypes.func,
   resetSettings: PropTypes.func,
   setTestStatus: PropTypes.func,
-  initializeAllNotes: PropTypes.func
+  initializeAllNotes: PropTypes.func,
+  startGame: PropTypes.func
 };
 
 MainContainer.defaultProps = {
@@ -88,7 +92,8 @@ MainContainer.defaultProps = {
   updateSettings: () => {},
   resetSettings: () => {},
   setTestStatus: () => {},
-  initializeAllNotes: () => {}
+  initializeAllNotes: () => {},
+  startGame: () => {}
 };
 
 export const MainContainerTest = MainContainer;

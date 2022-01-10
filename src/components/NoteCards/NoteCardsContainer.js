@@ -24,6 +24,7 @@ const NoteCardsContainer = props => {
   const {
     settingsState: { settings },
     toggleSettingsModal,
+    startGame,
     testComplete,
     setTestComplete
   } = props;
@@ -159,7 +160,7 @@ const NoteCardsContainer = props => {
           />
         ) : (
           <div className="start-button-container">
-            <Button variant="contained" onClick={() => randomizeNextNote()}>
+            <Button variant="contained" onClick={() => startGame()}>
               Begin!
             </Button>
           </div>
@@ -184,14 +185,16 @@ NoteCardsContainer.propTypes = {
   settingsState: allTypes.settingsState.types,
   testComplete: PropTypes.bool,
   setTestComplete: PropTypes.func,
-  toggleSettingsModal: PropTypes.func
+  toggleSettingsModal: PropTypes.func,
+  startGame: PropTypes.func
 };
 
 NoteCardsContainer.defaultProps = {
   settingsState: allTypes.settingsState.defaults,
   testComplete: false,
   setTestComplete: () => {},
-  toggleSettingsModal: () => {}
+  toggleSettingsModal: () => {},
+  startGame: () => {}
 };
 
 export default NoteCardsContainer;

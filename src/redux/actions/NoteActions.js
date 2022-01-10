@@ -3,6 +3,7 @@
 import {
   ADD_ALL_NOTES,
   ADD_TEST_POOL,
+  UPDATE_TEST_POOL_ITEM,
   DECREMENT_TEST_POOL,
   CLEAR_COMPLETED_POOL,
   INCREMENT_COMPLETED_POOL
@@ -37,11 +38,21 @@ export const addTestPool = testPoolArray => ({
 /**
  * @function decrementTestPool
  * @description removes entry with index from noteState.testPool
- * @param {Number} index
+ * @param {Object} noteObject
  */
 export const decrementTestPool = index => ({
   type: DECREMENT_TEST_POOL,
   payload: index
+});
+
+/**
+ * @function updateTestPool
+ * @description update specific noteObject in noteState.testPool
+ * @param {Array} updatedTestPoolArray
+ */
+export const updateTestPool = updatedTestPoolArray => ({
+  type: UPDATE_TEST_POOL_ITEM,
+  payload: updatedTestPoolArray
 });
 
 /**
@@ -63,8 +74,26 @@ export const incrementCompletedPool = noteObject => ({
 });
 
 /**
- * @function removeNoteFromTestPool
+ * @function updateNoteInTestPool
  * @description determins index of noteObject and removes from noteState.testPool
+ * @param {Object} noteObject
+ */
+export const updateNoteInTestPool = noteObject => (dispatch, getState) => {
+  const {
+    noteState: { testPool }
+  } = getState();
+
+  const testPoolIdsArray = (testPool ?? []).map(note => note.id);
+  const index = testPoolIdsArray.indexOf(noteObject?.id);
+
+  const updatedTestPool = [...testPool];
+  updatedTestPool[index] = noteObject;
+  dispatch(updateTestPool(noteObject));
+};
+
+/**
+ * @function removeNoteFromTestPool
+ * @description determines index of noteObject and removes from noteState.testPool
  * @param {Object} noteObject
  */
 export const removeNoteFromTestPool = noteObject => (dispatch, getState) => {
@@ -76,7 +105,7 @@ export const removeNoteFromTestPool = noteObject => (dispatch, getState) => {
   const index = testPoolIdsArray.indexOf(noteObject?.id);
 
   if (index !== -1) {
-    return dispatch(decrementTestPool(index));
+    return dispatch(decrementTestPool({ index, noteObject }));
   }
   return false;
 };

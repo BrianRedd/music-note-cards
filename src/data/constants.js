@@ -19,6 +19,7 @@ export const KEY = {
 };
 
 export const GAME_STATUS_NEW = "new";
+export const GAME_STATUS_INPROGRESS = "in progress";
 
 export const SEVERITY_INFO = "info";
 
@@ -26,7 +27,7 @@ export const OPTION_LIST = {
   instruments: ["guitar", "ukelele"],
   keys: ["", KEY?.SHARP?.text, "natural", KEY?.FLAT?.text],
   numberOfFrets: ["3_Three", "5_Five", "7_Seven"],
-  gameStatuses: [GAME_STATUS_NEW, "in progress", "completed"],
+  gameStatuses: [GAME_STATUS_NEW, GAME_STATUS_INPROGRESS, "completed"],
   severities: [SEVERITY_INFO, "error", "warning", "success"]
 };
 

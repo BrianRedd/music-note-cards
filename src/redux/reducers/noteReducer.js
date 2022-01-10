@@ -25,6 +25,11 @@ const noteState = (state = allTypes.noteState.defaults, action) => {
         ...state,
         testPool: payload
       };
+    case actionTypes.UPDATE_TEST_POOL_ITEM:
+      return {
+        ...state,
+        testPool: payload
+      };
     case actionTypes.DECREMENT_TEST_POOL:
       return {
         ...state,
