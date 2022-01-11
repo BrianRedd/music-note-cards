@@ -8,8 +8,7 @@ import _ from "lodash";
 import * as allTypes from "../types/appTypes";
 import actions from "../redux/Actions";
 
-import NoteCardsContainer from "./NoteCards/NoteCardsContainer";
-import SettingsDialogContainer from "./Modals/Settings/SettingsDialogContainer";
+import Main from "./Main";
 
 const mapStateToProps = state => ({
   noteState: state.noteState,
@@ -52,18 +51,12 @@ const MainContainer = props => {
 
   return (
     <div data-test="container-main">
-      <NoteCardsContainer
+      <Main
         noteState={noteState}
         gameState={gameState}
         settingsState={settingsState}
         toggleSettingsModal={toggleSettingsModal}
         startGame={startGame}
-      />
-      <SettingsDialogContainer
-        noteState={noteState}
-        gameState={gameState}
-        settingsState={settingsState}
-        toggleSettingsModal={toggleSettingsModal}
         updateSettings={updateSettings}
         setTestStatus={setTestStatus}
         resetSettings={resetSettings}

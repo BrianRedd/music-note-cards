@@ -144,7 +144,7 @@ const NoteCardsContainer = props => {
 
   return (
     <Row data-test="container-note-cards" className="note-cards-container gx-0">
-      <Col xs={4}>
+      <Col xs={4} className="staff-section">
         {!_.isEmpty(currentNoteTest) ? (
           <NoteStaff
             currentNoteTest={currentNoteTest}

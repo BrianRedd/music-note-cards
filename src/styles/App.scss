@@ -2,8 +2,38 @@
 
 html,
 body {
-  height: 412px;
-  width: 883px;
-  font-size: 14px;
+  height: 100%;
+  width: 100%;
   color: $color-darker-grey;
+  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/$color-lavender+0,207cca+0,a186be+0,f9ad81+100 */
+  background: $color-lavender; /* Old browsers */
+  background: -moz-linear-gradient(
+    top,
+    $color-lavender 0%,
+    $color-peach 100%
+  ); /* FF3.6-15 */
+  background: -webkit-linear-gradient(
+    top,
+    $color-lavender 0%,
+    $color-peach 100%
+  ); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(
+    to bottom,
+    $color-lavender 0%,
+    $color-peach 100%
+  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$color-lavender', endColorstr='$color-peach',GradientType=0 ); /* IE6-9 */
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .app-container {
+    height: 412px;
+    width: 883px;
+    font-size: 14px;
+  }
 }

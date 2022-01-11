@@ -15,73 +15,72 @@ $line: 1px solid black;
   justify-content: center;
   align-items: center;
   height: auto;
-}
-
-.stats {
-  height: auto;
-  padding: 10px;
-}
-
-.treble-clef {
-  height: $staff-height;
-  padding-top: 20px;
-  font-size: 70px;
-}
-
-.staff {
-  height: $staff-height;
-  width: $staff-width;
-  position: relative;
-  .line {
-    width: 100%;
-    height: $line-height;
-    border-bottom: $line;
-    border-left: 3px double black;
-    border-right: $line;
-    &.first {
-      border-left: none;
-      border-right: none;
-    }
+  .stats {
+    height: auto;
+    padding: 10px;
   }
-  .ledger-line {
-    width: 50px;
-    height: $line-height;
-    border-bottom: $line;
-    margin: auto;
-    visibility: hidden;
-    &.visible {
-      visibility: visible;
-    }
+
+  .treble-clef {
+    height: $staff-height;
+    padding-top: 20px;
+    font-size: 70px;
   }
-  .note {
-    position: absolute;
-    height: $note-dimension - 2;
-    width: calc($note-dimension * 1.2);
-    border-radius: 50%;
-    background-color: white;
-    border: 3px solid black;
-    top: 0px;
-    left: calc(($staff-width - $note-dimension * 1.2) / 2 );
-    &.with-symbol {
-      &:before {
-        position: absolute;
-        left: -10px;
-        top: -10px;
-        font-size: large;
+
+  .staff {
+    height: $staff-height;
+    width: $staff-width;
+    position: relative;
+    .line {
+      width: 100%;
+      height: $line-height;
+      border-bottom: $line;
+      border-left: 3px double black;
+      border-right: $line;
+      &.first {
+        border-left: none;
+        border-right: none;
       }
-      &.sharp {
+    }
+    .ledger-line {
+      width: 50px;
+      height: $line-height;
+      border-bottom: $line;
+      margin: auto;
+      visibility: hidden;
+      &.visible {
+        visibility: visible;
+      }
+    }
+    .note {
+      position: absolute;
+      height: $note-dimension - 2;
+      width: calc($note-dimension * 1.2);
+      border-radius: 50%;
+      background-color: white;
+      border: 3px solid black;
+      top: 0px;
+      left: calc(($staff-width - $note-dimension * 1.2) / 2);
+      &.with-symbol {
         &:before {
-          content: "\266F";
+          position: absolute;
+          left: -10px;
+          top: -10px;
+          font-size: large;
         }
-      }
-      &.natural {
-        &:before {
-          content: "\266E";
+        &.sharp {
+          &:before {
+            content: "\266F";
+          }
         }
-      }
-      &.flat {
-        &:before {
-          content: "\266D";
+        &.natural {
+          &:before {
+            content: "\266E";
+          }
+        }
+        &.flat {
+          &:before {
+            content: "\266D";
+          }
         }
       }
     }
