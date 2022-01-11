@@ -7,7 +7,7 @@ import { Button } from "@mui/material";
 import _ from "lodash";
 
 import * as allTypes from "../../types/appTypes";
-// import * as constant from "./data/constants";
+import * as constant from "../../data/constants";
 import availableNotes from "./data/notes";
 
 import "./styles/notecardscontainer.scss";
@@ -23,19 +23,67 @@ import FretBoard from "./FretBoard";
 const NoteCardsContainer = props => {
   const {
     settingsState: { settings },
+    gameState,
     toggleSettingsModal,
     startGame,
     testComplete,
-    setTestComplete
+    setTestComplete,
+    setGameMessage
   } = props;
 
   const [noteTestPool, setNoteTestPool] = useState([]);
   const [completedTestNotes, setCompletedTestNotes] = useState([]);
   const [currentNoteTest, setCurrentNoteTest] = useState({});
   const [randomNoteValue, setRandomNoteValue] = useState(-1);
-  const [alertSeverity, setAlertSeverity] = useState("info");
-  const [alertText, setAlertText] = useState("Begin!");
+  // const [alertSeverity, setAlertSeverity] = useState("info");
+  // const [alertText, setAlertText] = useState("Begin!");
   const [theseSettings, setTheseSettings] = useState(settings);
+
+  /**
+   * @function getStartNoteByStringIndices
+   * @description based on selected string-staff value, returns noteObject from
+   * constant.NOTE_PROGRESSION
+   * @param {String} value {string}-{staff}
+   * @returns {Object}
+   */
+  const getSelectedNoteObject = value => {
+    const stringValue = Number(value.split("-")[0]) - 1;
+    const staffValue = Number(value.split("-")[1]);
+    const consolidatedNoteProgression = constant.NOTE_PROGRESSION.map(
+      note => `${note.note}${note.key ? "#" : ""}`
+    );
+    const stringStartingNote =
+      constant.START_NOTE_BY_STRING[stringValue].toUpperCase();
+    const startNoteByStringIndices = constant.START_NOTE_BY_STRING.map(note =>
+      consolidatedNoteProgression.indexOf(note.toUpperCase())
+    );
+    const selectedNoteIndex =
+      (startNoteByStringIndices[stringValue] + staffValue) % 12;
+
+    // eslint-disable-next-line no-console
+    console.log(
+      "getSelectedNoteObject; value:",
+      value,
+      "\n consolidatedNoteProgression:",
+      consolidatedNoteProgression,
+      "\n stringStartingNote:",
+      stringStartingNote,
+      "\n startNoteByStringIndices:",
+      startNoteByStringIndices,
+      "\n selectedNoteIndex:",
+      selectedNoteIndex,
+      "\n return value:",
+      constant.NOTE_PROGRESSION[selectedNoteIndex]
+    );
+
+    return constant.NOTE_PROGRESSION[selectedNoteIndex];
+
+    // constant.NOTE_PROGRESSION[
+    //       (constant.START_NOTE_BY_STRING[value.split("-")[1]] +
+    //         Number(value.split("-")[0])) %
+    //         12
+    //     ]
+  };
 
   /**
    * @function useEffect
@@ -94,9 +142,10 @@ const NoteCardsContainer = props => {
    */
   const makeFretboardSelection = value => {
     // eslint-disable-next-line no-console
-    console.log("\nnoteTestPool:", noteTestPool);
+    console.log("makeFretboardSelection = value:", value);
     const updatedNoteTestPool = [...noteTestPool];
-    const isCorrect = currentNoteTest?.tab === value;
+    const isCorrect =
+      currentNoteTest?.tab === `${value.split("-")[1]}-${value.split("-")[0]}`;
     if (isCorrect) {
       const updatedCompletedTestNotes = [...completedTestNotes];
       updatedCompletedTestNotes.push({
@@ -108,8 +157,10 @@ const NoteCardsContainer = props => {
       updatedNoteTestPool.splice(randomNoteValue, 1);
       setCompletedTestNotes(updatedCompletedTestNotes);
       setNoteTestPool(updatedNoteTestPool);
-      setAlertSeverity("success");
-      setAlertText(`${currentNoteTest.name} is Correct!`);
+      setGameMessage({
+        severity: "success",
+        text: `${currentNoteTest.name} is Correct!`
+      });
     } else {
       const wrongGuesses =
         updatedNoteTestPool[randomNoteValue]?.wrongGuesses ?? [];
@@ -121,8 +172,15 @@ const NoteCardsContainer = props => {
           (updatedNoteTestPool[randomNoteValue]?.numberOfAttempts ?? 0) + 1,
         wrongGuesses
       };
+      const selectedNoteObject = getSelectedNoteObject(value);
       setNoteTestPool(updatedNoteTestPool);
-      setAlertSeverity("error");
+      setGameMessage({
+        severity: "error",
+        text: `${selectedNoteObject.note}${
+          selectedNoteObject.key ? "#" : ""
+        } is Incorrect! Should Be ${currentNoteTest.name}`
+      });
+      // setAlertSeverity("error");
       // setAlertText(
       //   `${
       //     constant.NOTE_PROGRESSION[
@@ -135,8 +193,12 @@ const NoteCardsContainer = props => {
     }
     if (updatedNoteTestPool.length === 0) {
       setTestComplete(true);
-      setAlertSeverity("success");
-      setAlertText("Test Complete!");
+      setGameMessage({
+        severity: "success",
+        text: "Test Complete!"
+      });
+      // setAlertSeverity("success");
+      // setAlertText("Test Complete!");
     } else {
       randomizeNextNote();
     }
@@ -170,10 +232,7 @@ const NoteCardsContainer = props => {
         <FretBoard
           settings={settings}
           makeFretboardSelection={makeFretboardSelection}
-          alert={{
-            severity: alertSeverity,
-            text: alertText
-          }}
+          gameState={gameState}
           toggleSettingsModal={toggleSettingsModal}
         />
       </Col>
@@ -183,18 +242,22 @@ const NoteCardsContainer = props => {
 
 NoteCardsContainer.propTypes = {
   settingsState: allTypes.settingsState.types,
+  gameState: allTypes.gameState.types,
   testComplete: PropTypes.bool,
   setTestComplete: PropTypes.func,
   toggleSettingsModal: PropTypes.func,
-  startGame: PropTypes.func
+  startGame: PropTypes.func,
+  setGameMessage: PropTypes.func
 };
 
 NoteCardsContainer.defaultProps = {
   settingsState: allTypes.settingsState.defaults,
+  gameState: allTypes.gameState.defaults,
   testComplete: false,
   setTestComplete: () => {},
   toggleSettingsModal: () => {},
-  startGame: () => {}
+  startGame: () => {},
+  setGameMessage: () => {}
 };
 
 export default NoteCardsContainer;

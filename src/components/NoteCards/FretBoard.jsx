@@ -15,14 +15,14 @@ import "./styles/fretboard.scss";
  * @returns {React.Component} - Rendered component.
  */
 const FretBoard = props => {
-  const { settings, makeFretboardSelection, alert, toggleSettingsModal } =
+  const { settings, makeFretboardSelection, gameState, toggleSettingsModal } =
     props;
 
   const Frets = memo(fretProps => {
     const { stringNumber } = fretProps;
     const frets = [];
-    for (let i = 0; i <= settings?.numberOfFrets ?? 0; i += 1) {
-      const key = `${i}-${stringNumber}`;
+    for (let fret = 0; fret <= settings?.numberOfFrets ?? 0; fret += 1) {
+      const key = `${stringNumber}-${fret}`;
       frets.push(
         <div
           className={`fret${
@@ -46,10 +46,10 @@ const FretBoard = props => {
 
   const BottomButtons = memo(() => {
     const bottomButtons = [];
-    for (let i = 0; i <= settings?.numberOfFrets ?? 0; i += 1) {
-      const key = `${i}-${
+    for (let fret = 0; fret <= settings?.numberOfFrets ?? 0; fret += 1) {
+      const key = `${
         constant.INSTRUMENT?.[settings?.instrument]?.numberOfStrings
-      }`;
+      }-${fret}`;
       bottomButtons.push(
         <div className="fret bottom-fret" key={key}>
           <ButtonBase
@@ -92,7 +92,7 @@ const FretBoard = props => {
   return (
     <div data-test="presentation-fretboard" className="section-container">
       <Alert
-        severity={alert.severity}
+        severity={gameState?.message?.severity}
         action={
           <ButtonBase
             color="inherit"
@@ -103,7 +103,7 @@ const FretBoard = props => {
           </ButtonBase>
         }
       >
-        {alert.text}
+        {gameState?.message?.text}
       </Alert>
       <div className="fretboard-container">
         <Strings />
@@ -114,20 +114,14 @@ const FretBoard = props => {
 
 FretBoard.propTypes = {
   settings: allTypes.settings.types,
-  alert: PropTypes.shape({
-    severity: PropTypes.string,
-    text: PropTypes.string
-  }),
+  gameState: allTypes.gameState.types,
   makeFretboardSelection: PropTypes.func,
   toggleSettingsModal: PropTypes.func
 };
 
 FretBoard.defaultProps = {
   settings: allTypes.settings.defaults,
-  alert: PropTypes.shape({
-    severity: "info",
-    text: "Begin!"
-  }),
+  gameState: allTypes.gameState.types,
   makeFretboardSelection: () => {},
   toggleSettingsModal: () => {}
 };

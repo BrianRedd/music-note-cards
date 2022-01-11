@@ -15,8 +15,21 @@ import * as allTypes from "../../types/appTypes";
 const gameState = (state = allTypes.gameState.defaults, action) => {
   const { type, payload } = action;
   switch (type) {
-    case actionTypes.PLACEHOLDER:
-      return { ...state, temp: payload };
+    case actionTypes.SET_TEST_STATUS:
+      return {
+        ...state,
+        testStatus: payload
+      };
+    case actionTypes.SET_CURRENT_TEST_NOTE:
+      return {
+        ...state,
+        currentTestNote: payload
+      };
+    case actionTypes.SET_GAME_MESSAGE:
+      return {
+        ...state,
+        message: payload
+      };
     default:
       return state;
   }

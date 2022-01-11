@@ -22,7 +22,8 @@ const Main = props => {
     startGame,
     updateSettings,
     setTestStatus,
-    resetSettings
+    resetSettings,
+    setGameMessage
   } = props;
 
   return (
@@ -33,6 +34,7 @@ const Main = props => {
         settingsState={settingsState}
         toggleSettingsModal={toggleSettingsModal}
         startGame={startGame}
+        setGameMessage={setGameMessage}
       />
       <SettingsModalContainer
         noteState={noteState}
@@ -55,7 +57,8 @@ Main.propTypes = {
   updateSettings: PropTypes.func,
   resetSettings: PropTypes.func,
   setTestStatus: PropTypes.func,
-  startGame: PropTypes.func
+  startGame: PropTypes.func,
+  setGameMessage: PropTypes.func
 };
 
 Main.defaultProps = {
@@ -66,7 +69,8 @@ Main.defaultProps = {
   updateSettings: () => {},
   resetSettings: () => {},
   setTestStatus: () => {},
-  startGame: () => {}
+  startGame: () => {},
+  setGameMessage: () => {}
 };
 
 export default Main;
