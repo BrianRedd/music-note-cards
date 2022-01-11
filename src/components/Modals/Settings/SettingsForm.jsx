@@ -26,7 +26,7 @@ const SettingsForm = props => {
   const { settingsObject, updateSettingsInState } = props;
 
   return (
-    <Row>
+    <Row data-test="form-settings">
       <Col xs={4}>
         <FormControl component="fieldset">
           <FormLabel component="legend">Instrument</FormLabel>

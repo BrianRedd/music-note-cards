@@ -57,7 +57,7 @@ const SettingsModalContainer = props => {
 
   return (
     <Modal
-      data-test="modal-settings-container"
+      data-test="modal-container-settings"
       isOpen={settingsState?.isModalOpen}
       toggle={toggleSettingsModal}
       size="xl"
