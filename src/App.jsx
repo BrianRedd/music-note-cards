@@ -7,12 +7,12 @@ import store from "./redux/configureStore";
 
 import "./styles/App.scss";
 
-import MainContainer from "./components/MainContainer";
+import Main from "./components/Main";
 
 const App = () => (
   <Provider store={store}>
     <div data-test="container-app" className="app-container">
-      <MainContainer />
+      <Main />
     </div>
   </Provider>
 );

@@ -2,10 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import { Row, Col } from "reactstrap";
 import { Button } from "@mui/material";
 import _ from "lodash";
 
+import actions from "../../redux/Actions";
 import * as allTypes from "../../types/appTypes";
 import * as constant from "../../data/constants";
 
@@ -14,6 +16,18 @@ import "./styles/notecardscontainer.scss";
 import NoteStaff from "./NoteStaff";
 import FretBoard from "./FretBoard";
 
+const mapStateToProps = state => ({
+  gameState: state.gameState,
+  noteState: state.noteState,
+  settingsState: state.settingsState
+});
+
+const mapDispatchToProps = {
+  startGame: actions.startGame,
+  toggleSettingsModal: actions.toggleSettingsModal,
+  makeFretboardSelection: actions.makeFretboardSelection
+};
+
 /**
  * @function NoteCardsContainer
  * @description Functional Presentational component for NoteCardsContainer
@@ -21,9 +35,9 @@ import FretBoard from "./FretBoard";
  */
 const NoteCardsContainer = props => {
   const {
-    settingsState: { settings },
     gameState,
     noteState,
+    settingsState: { settings },
     startGame,
     toggleSettingsModal,
     makeFretboardSelection
@@ -32,9 +46,9 @@ const NoteCardsContainer = props => {
   const [showStartButton, setShowStartButton] = useState(true);
 
   useEffect(() => {
-    if (gameState?.testStatus === constant.GAME_STATUS_INPROGRESS) {
-      setShowStartButton(false);
-    }
+    setShowStartButton(
+      gameState?.testStatus !== constant.GAME_STATUS_INPROGRESS
+    );
   }, [gameState]);
 
   return (
@@ -42,13 +56,13 @@ const NoteCardsContainer = props => {
       <Col xs={4} className="staff-section">
         {showStartButton ? (
           <div className="start-button-container">
-            <Button variant="contained" onClick={() => startGame()}>
-              Begin!
+            <Button onClick={() => startGame()}>
+              <span className="fas fa-guitar fa-7x color-green" />
             </Button>
           </div>
         ) : (
           <NoteStaff
-            currentNoteTest={gameState.currentNoteTest}
+            gameState={gameState}
             stats={{
               numberCorrect: (noteState?.completedPool ?? []).length,
               numberWrong: _.sum(
@@ -91,4 +105,5 @@ NoteCardsContainer.defaultProps = {
   makeFretboardSelection: () => {}
 };
 
-export default NoteCardsContainer;
+export const NoteCardsContainerTest = NoteCardsContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(NoteCardsContainer);

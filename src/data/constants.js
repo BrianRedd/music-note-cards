@@ -20,8 +20,12 @@ export const KEY = {
 
 export const GAME_STATUS_NEW = "new";
 export const GAME_STATUS_INPROGRESS = "in progress";
+export const GAME_STATUS_COMPLETED = "completed";
 
 export const SEVERITY_INFO = "info";
+export const SEVERITY_ERROR = "error";
+export const SEVERITY_WARNING = "warning";
+export const SEVERITY_SUCCESS = "success";
 
 export const OPTION_LIST = {
   instruments: ["guitar", "ukelele"],

@@ -92,6 +92,28 @@ export const startGame = () => (dispatch, getState) => {
 };
 
 /**
+ * @function getStartNoteByStringIndices
+ * @description based on selected string-staff value, returns noteObject from
+ * constant.NOTE_PROGRESSION
+ * @param {String} value {string}-{staff}
+ * @returns {Object}
+ */
+const getSelectedNoteObject = value => {
+  const stringValue = Number(value.split("-")[0]) - 1;
+  const staffValue = Number(value.split("-")[1]);
+  const consolidatedNoteProgression = constant.NOTE_PROGRESSION.map(
+    note => `${note.note}${note.key ? "#" : ""}`
+  );
+  const startNoteByStringIndices = constant.START_NOTE_BY_STRING.map(note =>
+    consolidatedNoteProgression.indexOf(note.toUpperCase())
+  );
+  const selectedNoteIndex =
+    (startNoteByStringIndices[stringValue] + staffValue) % 12;
+
+  return constant.NOTE_PROGRESSION[selectedNoteIndex];
+};
+
+/**
  * @function makeFretboardSelection
  * @description test selected fret against state and dispatch appropriate actions
  * @param {String} selection
@@ -108,4 +130,24 @@ export const makeFretboardSelection = selection => (dispatch, getState) => {
     "\ncurrentTestNote:",
     currentTestNote
   );
+
+  const isCorrect =
+    selection ===
+    `${currentTestNote?.stringValue}-${currentTestNote?.tabValue}`;
+  let text = "";
+  if (isCorrect) {
+    text = `${currentTestNote.name} is Correct!`;
+  } else {
+    const selectedNoteObject = getSelectedNoteObject(selection);
+    text = `${selectedNoteObject.note}${
+      selectedNoteObject.key ? "#" : ""
+    } is Incorrect! Should Be ${currentTestNote.name}`;
+  }
+  dispatch(
+    setGameMessage({
+      severity: isCorrect ? constant.SEVERITY_SUCCESS : constant.SEVERITY_ERROR,
+      text
+    })
+  );
+  dispatch(setTestNote());
 };

@@ -19,7 +19,7 @@ const TrebleClef = () => <span className="treble-clef">&#119070;</span>;
  * @returns {React.Component} - Rendered component.
  */
 const NoteStaff = props => {
-  const { currentNoteTest, stats } = props;
+  const { gameState, stats } = props;
 
   const Lines = memo(() => {
     const lines = [];
@@ -35,8 +35,8 @@ const NoteStaff = props => {
       lines.push(
         <div
           className={`ledger-line below-${i}${
-            currentNoteTest?.ledgerLine &&
-            i <= Number(currentNoteTest?.ledgerLine)
+            gameState?.currentTestNote?.ledgerLine &&
+            i <= Number(gameState?.currentTestNote?.ledgerLine)
               ? " visible"
               : ""
           }`}
@@ -48,13 +48,14 @@ const NoteStaff = props => {
   });
 
   const Note = memo(() => {
-    const topLocation = (currentNoteTest.staffValue + 1) * 10;
+    const topLocation =
+      ((gameState?.currentTestNote?.staffValue ?? 0) + 1) * 10;
     const noteClassArray = ["note"];
-    if (currentNoteTest?.key) {
+    if (gameState?.currentTestNote?.key) {
       noteClassArray.push("with-symbol");
-      noteClassArray.push(currentNoteTest?.key);
+      noteClassArray.push(gameState?.currentTestNote?.key);
     }
-    return currentNoteTest ? (
+    return gameState?.currentTestNote ? (
       <div
         className={noteClassArray.join(" ")}
         style={{ marginTop: `${topLocation}px` }}
@@ -79,7 +80,7 @@ const NoteStaff = props => {
         <div className="staff">
           <div
             className={`ledger-line above-1${
-              currentNoteTest?.ledgerLine === -1 ? " visible" : ""
+              gameState?.currentTestNote?.ledgerLine === -1 ? " visible" : ""
             }`}
           />
           <Lines />
@@ -92,7 +93,7 @@ const NoteStaff = props => {
 };
 
 NoteStaff.propTypes = {
-  currentNoteTest: allTypes.note.types,
+  gameState: allTypes.gameState.types,
   stats: PropTypes.shape({
     numberCorrect: PropTypes.number,
     numberWrong: PropTypes.number,
@@ -101,7 +102,7 @@ NoteStaff.propTypes = {
 };
 
 NoteStaff.defaultProps = {
-  currentNoteTest: allTypes.note.defaults,
+  gameState: allTypes.gameState.defaults,
   stats: {
     numberCorrect: 0,
     numberWrong: 0,

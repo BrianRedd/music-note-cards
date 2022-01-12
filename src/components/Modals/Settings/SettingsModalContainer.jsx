@@ -2,14 +2,27 @@
 
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import _ from "lodash";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { Button } from "@mui/material";
 
+import actions from "../../../redux/Actions";
 import * as allTypes from "../../../types/appTypes";
 import * as constant from "../../../data/constants";
 
 import SettingsForm from "./SettingsForm";
+
+const mapStateToProps = state => ({
+  settingsState: state.settingsState
+});
+
+const mapDispatchToProps = {
+  toggleSettingsModal: actions.toggleSettingsModal,
+  updateSettings: actions.updateSettings,
+  resetSettings: actions.resetSettings,
+  setTestStatus: actions.setTestStatus
+};
 
 /**
  * @function SettingsModalContainer
@@ -105,6 +118,7 @@ const SettingsModalContainer = props => {
               setTestStatus(constant.GAME_STATUS_NEW);
             }
             updateSettings(updatedSettings);
+            setTestStatus(constant.GAME_STATUS_NEW);
             toggleSettingsModal();
           }}
         >
@@ -131,4 +145,8 @@ SettingsModalContainer.defaultProps = {
   resetSettings: () => {}
 };
 
-export default SettingsModalContainer;
+export const SettingsModalContainerTest = SettingsModalContainer;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SettingsModalContainer);
