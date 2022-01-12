@@ -14,7 +14,8 @@ $line: 1px solid black;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: auto;
+  height: 100%;
+  padding-bottom: 75px;
   .stats {
     height: auto;
     padding: 10px;

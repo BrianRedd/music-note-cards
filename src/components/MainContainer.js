@@ -23,7 +23,8 @@ const mapDispatchToProps = {
   setTestStatus: actions.setTestStatus,
   initializeAllNotes: actions.initializeAllNotes,
   startGame: actions.startGame,
-  setGameMessage: actions.setGameMessage
+  setGameMessage: actions.setGameMessage,
+  makeFretboardSelection: actions.makeFretboardSelection
 };
 
 /**
@@ -42,7 +43,8 @@ const MainContainer = props => {
     setTestStatus,
     initializeAllNotes,
     startGame,
-    setGameMessage
+    setGameMessage,
+    makeFretboardSelection
   } = props;
 
   useEffect(() => {
@@ -63,6 +65,7 @@ const MainContainer = props => {
         setTestStatus={setTestStatus}
         resetSettings={resetSettings}
         setGameMessage={setGameMessage}
+        makeFretboardSelection={makeFretboardSelection}
       />
     </div>
   );
@@ -78,7 +81,8 @@ MainContainer.propTypes = {
   setTestStatus: PropTypes.func,
   initializeAllNotes: PropTypes.func,
   startGame: PropTypes.func,
-  setGameMessage: PropTypes.func
+  setGameMessage: PropTypes.func,
+  makeFretboardSelection: PropTypes.func
 };
 
 MainContainer.defaultProps = {
@@ -91,7 +95,8 @@ MainContainer.defaultProps = {
   setTestStatus: () => {},
   initializeAllNotes: () => {},
   startGame: () => {},
-  setGameMessage: () => {}
+  setGameMessage: () => {},
+  makeFretboardSelection: () => {}
 };
 
 export const MainContainerTest = MainContainer;

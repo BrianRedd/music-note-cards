@@ -23,7 +23,8 @@ const Main = props => {
     updateSettings,
     setTestStatus,
     resetSettings,
-    setGameMessage
+    setGameMessage,
+    makeFretboardSelection
   } = props;
 
   return (
@@ -35,6 +36,7 @@ const Main = props => {
         toggleSettingsModal={toggleSettingsModal}
         startGame={startGame}
         setGameMessage={setGameMessage}
+        makeFretboardSelection={makeFretboardSelection}
       />
       <SettingsModalContainer
         noteState={noteState}
@@ -58,7 +60,8 @@ Main.propTypes = {
   resetSettings: PropTypes.func,
   setTestStatus: PropTypes.func,
   startGame: PropTypes.func,
-  setGameMessage: PropTypes.func
+  setGameMessage: PropTypes.func,
+  makeFretboardSelection: PropTypes.func
 };
 
 Main.defaultProps = {
@@ -70,7 +73,8 @@ Main.defaultProps = {
   resetSettings: () => {},
   setTestStatus: () => {},
   startGame: () => {},
-  setGameMessage: () => {}
+  setGameMessage: () => {},
+  makeFretboardSelection: () => {}
 };
 
 export default Main;

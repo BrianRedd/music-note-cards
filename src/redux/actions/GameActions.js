@@ -42,6 +42,22 @@ export const setGameMessage = messageObject => ({
 });
 
 /**
+ * @function setTestNote
+ * @description randomize a note from noteState.testPool and dispatch to gameState.currentTestNote
+ */
+export const setTestNote =
+  (filteredNotes = null) =>
+  (dispatch, getState) => {
+    const { noteState } = getState();
+    const testPool =
+      (noteState?.testPool ?? []).length > 0
+        ? noteState?.testPool
+        : filteredNotes;
+    const randomNumber = Math.floor(Math.random() * testPool.length);
+    dispatch(setCurrentTestNote(testPool[randomNumber]));
+  };
+
+/**
  * @function startGame
  * @description set testPool based on settings and start game
  */
@@ -71,5 +87,25 @@ export const startGame = () => (dispatch, getState) => {
     );
   }
   dispatch(addTestPool(filteredNotes));
+  dispatch(setTestNote(filteredNotes));
   dispatch(setTestStatus(constant.GAME_STATUS_INPROGRESS));
+};
+
+/**
+ * @function makeFretboardSelection
+ * @description test selected fret against state and dispatch appropriate actions
+ * @param {String} selection
+ */
+export const makeFretboardSelection = selection => (dispatch, getState) => {
+  const {
+    gameState: { currentTestNote }
+    // noteState: { testPool }
+  } = getState();
+  // eslint-disable-next-line no-console
+  console.log(
+    "makeFretboardSelection; selection:",
+    selection,
+    "\ncurrentTestNote:",
+    currentTestNote
+  );
 };

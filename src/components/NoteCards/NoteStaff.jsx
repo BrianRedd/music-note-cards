@@ -65,7 +65,7 @@ const NoteStaff = props => {
   });
 
   return (
-    <div data-test="container-note-cards" className="p-2">
+    <div data-test="container-note-cards" className="p-2 h-100">
       <div className="stats">
         Number of Correct Guesses: {stats.numberCorrect}
         <br />
