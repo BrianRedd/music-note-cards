@@ -76,12 +76,16 @@ export const settings = {
   types: shape({
     instrument: oneOf(OPTION_LIST.instruments),
     numberOfFrets: number,
-    excludedKeys: arrayOf(oneOf(OPTION_LIST.keys))
+    excludedKeys: arrayOf(oneOf(OPTION_LIST.keys)),
+    highlightWrong: bool,
+    removeWrongFromPool: bool
   }),
   defaults: {
     instrument: OPTION_LIST.instruments[0],
     numberOfFrets: 7,
-    excludedKeys: []
+    excludedKeys: [],
+    highlightWrong: false, // TODO: add option
+    removeWrongFromPool: true
   }
 };
 export const settingsState = {

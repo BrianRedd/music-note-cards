@@ -6,6 +6,7 @@ import { Row, Col } from "reactstrap";
 import {
   FormControl,
   FormLabel,
+  InputLabel,
   RadioGroup,
   FormControlLabel,
   Radio,
@@ -28,7 +29,7 @@ const SettingsForm = props => {
   return (
     <Row data-test="form-settings">
       <Col xs={4}>
-        <FormControl component="fieldset">
+        <FormControl component="fieldset" className="mb-2">
           <FormLabel component="legend">Instrument</FormLabel>
           <RadioGroup
             aria-label="instrument"
@@ -50,10 +51,8 @@ const SettingsForm = props => {
             />
           </RadioGroup>
         </FormControl>
-      </Col>
-      <Col xs={4}>
-        <FormLabel component="legend">Number of Frets</FormLabel>
         <FormControl className="w-75">
+          <InputLabel component="legend">Number of Frets</InputLabel>
           <Select
             value={settingsObject?.numberOfFrets}
             onChange={event => {
@@ -70,17 +69,60 @@ const SettingsForm = props => {
       </Col>
       <Col xs={4}>
         <FormControl>
+          <FormLabel component="legend">Game Options</FormLabel>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={settingsObject?.removeWrongFromPool}
+                onChange={event => {
+                  updateSettingsInState(
+                    "removeWrongFromPool",
+                    event.target.checked
+                  );
+                }}
+              />
+            }
+            label="Remove Wrong Answers from Test Pool"
+          />
+        </FormControl>
+      </Col>
+      <Col xs={4}>
+        <FormControl>
           <FormLabel component="legend">Keys</FormLabel>
           <FormControlLabel
             control={
               <Switch
-                checked={settingsObject?.excludeSharps}
+                checked={settingsObject?.excludeSharp}
                 onChange={event => {
-                  updateSettingsInState("excludeSharps", event.target.checked);
+                  updateSettingsInState("excludeSharp", event.target.checked);
                 }}
               />
             }
             label="Exclude Sharps"
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={settingsObject?.excludeNatural}
+                onChange={event => {
+                  updateSettingsInState("excludeNatural", event.target.checked);
+                }}
+                disabled
+              />
+            }
+            label="Exclude Naturals"
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={settingsObject?.excludeFlat}
+                onChange={event => {
+                  updateSettingsInState("excludeFlat", event.target.checked);
+                }}
+                disabled
+              />
+            }
+            label="Exclude Flats"
           />
         </FormControl>
       </Col>

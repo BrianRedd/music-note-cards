@@ -13,7 +13,7 @@ export const KEY = {
     symbol: "+"
   },
   FLAT: {
-    text: "sharp",
+    text: "flat",
     symbol: "b"
   }
 };
@@ -29,7 +29,7 @@ export const SEVERITY_SUCCESS = "success";
 
 export const OPTION_LIST = {
   instruments: ["guitar", "ukelele"],
-  keys: ["", KEY?.SHARP?.text, "natural", KEY?.FLAT?.text],
+  keys: ["", KEY?.SHARP?.text, KEY?.NATURAL?.text, KEY?.FLAT?.text],
   numberOfFrets: ["3_Three", "5_Five", "7_Seven"],
   gameStatuses: [GAME_STATUS_NEW, GAME_STATUS_INPROGRESS, "completed"],
   severities: [SEVERITY_INFO, "error", "warning", "success"]

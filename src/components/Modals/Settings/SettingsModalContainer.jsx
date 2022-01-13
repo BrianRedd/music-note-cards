@@ -41,31 +41,38 @@ const SettingsModalContainer = props => {
   /**
    * @description local state values for settings
    */
-  const [instrument, setInstrument] = useState(
-    settingsState?.settings?.instrument
-  );
-  const [numberOfFrets, setNumberOfFrets] = useState(
-    settingsState?.settings?.numberOfFrets
-  );
-  const [excludeSharps, setExcludeSharps] = useState(
-    (settingsState?.settings?.excludedKeys ?? []).includes(
+  const [theseSettings, setTheseSettings] = useState({
+    ...settingsState?.settings,
+    excludeSharp: (settingsState?.settings?.excludedKeys ?? []).includes(
       constant.KEY.SHARP.text
+    ),
+    excludeFlat: (settingsState?.settings?.excludedKeys ?? []).includes(
+      constant.KEY.FLAT.text
+    ),
+    excludeNatural: (settingsState?.settings?.excludedKeys ?? []).includes(
+      constant.KEY.NATURAL.text
     )
-  );
+  });
 
+  /**
+   * @function updatedSettings
+   * @description take form field update and apply to theseSettings
+   * @param {String} field
+   * @param {String} value
+   */
   const updateSettingsInState = (field, value) => {
-    switch (field) {
-      case "instrument":
-        setInstrument(value);
-        break;
-      case "numberOfFrets":
-        setNumberOfFrets(value);
-        break;
-      case "excludeSharps":
-        setExcludeSharps(value);
-        break;
-      default:
+    const updatedSettings = { ...theseSettings };
+    if (field.startsWith("exclude")) {
+      const booField = field.substring(7).toLowerCase();
+      const idx = updatedSettings.excludedKeys.indexOf(booField);
+      if (idx === -1) {
+        updatedSettings.excludedKeys.push(booField);
+      } else {
+        updatedSettings.excludedKeys.splice(idx, 1);
+      }
     }
+    updatedSettings[field] = value;
+    setTheseSettings(updatedSettings);
   };
 
   return (
@@ -81,11 +88,7 @@ const SettingsModalContainer = props => {
       </ModalHeader>
       <ModalBody>
         <SettingsForm
-          settingsObject={{
-            instrument,
-            numberOfFrets,
-            excludeSharps
-          }}
+          settingsObject={theseSettings}
           updateSettingsInState={updateSettingsInState}
         />
       </ModalBody>
@@ -102,22 +105,15 @@ const SettingsModalContainer = props => {
         <Button
           variant="outlined"
           onClick={() => {
-            const excludedKeys = [];
-            if (excludeSharps) excludedKeys.push(constant.KEY.SHARP.text);
-            const updatedSettings = {
-              instrument,
-              numberOfFrets,
-              excludedKeys
-            };
             if (
               !_.isEqual(
-                { ...settingsState.settings, ...updatedSettings },
+                { ...settingsState.settings, ...theseSettings },
                 settingsState?.settings
               )
             ) {
               setTestStatus(constant.GAME_STATUS_NEW);
             }
-            updateSettings(updatedSettings);
+            updateSettings(theseSettings);
             setTestStatus(constant.GAME_STATUS_NEW);
             toggleSettingsModal();
           }}
