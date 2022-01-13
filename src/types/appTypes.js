@@ -81,9 +81,9 @@ export const settings = {
     removeWrongFromPool: bool
   }),
   defaults: {
-    instrument: OPTION_LIST.instruments[0],
-    numberOfFrets: 7,
-    excludedKeys: [],
+    instrument: OPTION_LIST.instruments[1],
+    numberOfFrets: 3,
+    excludedKeys: ["sharp"],
     highlightWrong: false, // TODO: add option
     removeWrongFromPool: true
   }

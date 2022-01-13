@@ -1,6 +1,13 @@
 /** @module GameActions */
 
-import { addTestPool } from "./NoteActions";
+import _ from "lodash";
+
+import {
+  addTestPool,
+  incrementCompletedPool,
+  removeNoteFromTestPool,
+  updateTestPool
+} from "./NoteActions";
 
 import {
   SET_TEST_STATUS,
@@ -53,6 +60,16 @@ export const setTestNote =
       (noteState?.testPool ?? []).length > 0
         ? noteState?.testPool
         : filteredNotes;
+    if (_.isEmpty(testPool)) {
+      dispatch(
+        setGameMessage({
+          severity: constant.SEVERITY_WARNING,
+          text: "Game Over!"
+        })
+      );
+      dispatch(setTestStatus(constant.GAME_STATUS_COMPLETED));
+      return;
+    }
     const randomNumber = Math.floor(Math.random() * testPool.length);
     dispatch(setCurrentTestNote(testPool[randomNumber]));
   };
@@ -68,7 +85,7 @@ export const startGame = () => (dispatch, getState) => {
   } = getState();
   let filteredNotes = allNotes.map(note => ({
     ...note,
-    lastAttemptStatus: "untested",
+    lastAttemptStatus: constant.TEST_NOTE_STATUS_UNTESTED,
     numberOfAttempts: 0,
     wrongGuesses: []
   }));
@@ -120,8 +137,9 @@ const getSelectedNoteObject = value => {
  */
 export const makeFretboardSelection = selection => (dispatch, getState) => {
   const {
-    gameState: { currentTestNote }
-    // noteState: { testPool }
+    gameState: { currentTestNote },
+    noteState: { testPool },
+    settingsState: { settings }
   } = getState();
   // eslint-disable-next-line no-console
   console.log(
@@ -135,13 +153,43 @@ export const makeFretboardSelection = selection => (dispatch, getState) => {
     selection ===
     `${currentTestNote?.stringValue}-${currentTestNote?.tabValue}`;
   let text = "";
+
+  const idx = (testPool ?? []).map(note => note.id).indexOf(currentTestNote.id);
+  if (idx === -1) {
+    dispatch(
+      setGameMessage({
+        severity: constant.SEVERITY_ERROR,
+        text: "ERROR!"
+      })
+    );
+    return;
+  }
+  const updatedTestNote = { ...testPool?.[idx] };
+  updatedTestNote.numberOfAttempts += 1;
   if (isCorrect) {
+    // Correct answer
     text = `${currentTestNote.name} is Correct!`;
+    updatedTestNote.lastAttemptStatus = constant.TEST_NOTE_STATUS_CORRECT;
+    dispatch(incrementCompletedPool(updatedTestNote));
+    dispatch(removeNoteFromTestPool(idx));
   } else {
+    // Incorrect answer
     const selectedNoteObject = getSelectedNoteObject(selection);
     text = `${selectedNoteObject.note}${
       selectedNoteObject.key ? "#" : ""
     } is Incorrect! Should Be ${currentTestNote.name}`;
+    updatedTestNote.wrongGuesses.push(selection);
+    updatedTestNote.lastAttemptStatus = constant.TEST_NOTE_STATUS_INCORRECT;
+    if (settings?.removeWrongFromPool) {
+      const updatedTestPool = [...testPool];
+      updatedTestPool[idx] = updatedTestNote;
+      // eslint-disable-next-line no-console
+      console.log(updatedTestPool, idx, updatedTestNote);
+      dispatch(updateTestPool(updatedTestPool));
+    } else {
+      dispatch(incrementCompletedPool(updatedTestNote));
+      dispatch(removeNoteFromTestPool(idx));
+    }
   }
   dispatch(
     setGameMessage({

@@ -30,11 +30,6 @@ const noteState = (state = allTypes.noteState.defaults, action) => {
         ...state,
         testPool: payload
       };
-    case actionTypes.DECREMENT_TEST_POOL:
-      return {
-        ...state,
-        testPool: [...action.testPool.splice(payload, 1)]
-      };
     case actionTypes.CLEAR_COMPLETED_POOL:
       return {
         ...state,

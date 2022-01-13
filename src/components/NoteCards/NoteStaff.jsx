@@ -2,16 +2,15 @@
 
 import React, { memo } from "react";
 import PropTypes from "prop-types";
+import _ from "lodash";
+import { Button } from "@mui/material";
 
 import * as allTypes from "../../types/appTypes";
+import * as constant from "../../data/constants";
 
 import "./styles/notestaff.scss";
 
 const TrebleClef = () => <span className="treble-clef">&#119070;</span>;
-
-// const SharpSymbol = () => <span className="staff-symbol">&#9839;</span>;
-// const NaturalSymbol = () => <span className="staff-symbol">&#9838;</span>;
-// const FlatSymbol = () => <span className="staff-symbol">&#9837;</span>;
 
 /**
  * @function NoteStaff
@@ -19,7 +18,23 @@ const TrebleClef = () => <span className="treble-clef">&#119070;</span>;
  * @returns {React.Component} - Rendered component.
  */
 const NoteStaff = props => {
-  const { gameState, stats } = props;
+  const { gameState, noteState, startGame } = props;
+
+  const stats = {
+    numberCorrect: (noteState?.completedPool ?? []).length,
+    numberWrong:
+      _.sum(
+        (noteState?.testPool ?? []).map(
+          note => (note.wrongGuesses ?? []).length
+        )
+      ) +
+      _.sum(
+        (noteState?.completedPool ?? []).map(
+          note => (note.wrongGuesses ?? []).length
+        )
+      ),
+    numberRemaining: (noteState?.testPool ?? []).length
+  };
 
   const Lines = memo(() => {
     const lines = [];
@@ -67,47 +82,51 @@ const NoteStaff = props => {
 
   return (
     <div data-test="container-note-cards" className="p-2 h-100">
-      <div className="stats">
-        Number of Correct Guesses: {stats.numberCorrect}
-        <br />
-        Number of Wrong Guesses: {stats.numberWrong}
-        <br />
-        Test Items Remaining: {stats.numberRemaining}
-        <br />
-      </div>
-      <div className="staff-container">
-        <TrebleClef />
-        <div className="staff">
-          <div
-            className={`ledger-line above-1${
-              gameState?.currentTestNote?.ledgerLine === -1 ? " visible" : ""
-            }`}
-          />
-          <Lines />
-          <LowerLedgerLines />
-          <Note />
+      {gameState.testStatus !== constant.GAME_STATUS_NEW && (
+        <div className="stats">
+          Number of Correct Guesses: {stats.numberCorrect}
+          <br />
+          Number of Wrong Guesses: {stats.numberWrong}
+          <br />
+          Test Items Remaining: {stats.numberRemaining}
+          <br />
         </div>
-      </div>
+      )}
+      {gameState.testStatus === constant.GAME_STATUS_INPROGRESS ? (
+        <div className="staff-container">
+          <TrebleClef />
+          <div className="staff">
+            <div
+              className={`ledger-line above-1${
+                gameState?.currentTestNote?.ledgerLine === -1 ? " visible" : ""
+              }`}
+            />
+            <Lines />
+            <LowerLedgerLines />
+            <Note />
+          </div>
+        </div>
+      ) : (
+        <div className="start-button-container">
+          <Button onClick={() => startGame()}>
+            <span className="fas fa-guitar fa-7x color-green" />
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
 
 NoteStaff.propTypes = {
   gameState: allTypes.gameState.types,
-  stats: PropTypes.shape({
-    numberCorrect: PropTypes.number,
-    numberWrong: PropTypes.number,
-    numberRemaining: PropTypes.number
-  })
+  noteState: allTypes.noteState.types,
+  startGame: PropTypes.func
 };
 
 NoteStaff.defaultProps = {
   gameState: allTypes.gameState.defaults,
-  stats: {
-    numberCorrect: 0,
-    numberWrong: 0,
-    numberRemaining: 0
-  }
+  noteState: allTypes.noteState.defaults,
+  startGame: () => {}
 };
 
 export default NoteStaff;

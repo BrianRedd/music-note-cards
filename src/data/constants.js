@@ -6,15 +6,18 @@ export const INSTRUMENT_UKELELE = "ukelele";
 export const KEY = {
   SHARP: {
     text: "sharp",
-    symbol: "#"
+    symbol: "#",
+    symbolCode: "&#9839;"
   },
   NATURAL: {
     text: "natural",
-    symbol: "+"
+    symbol: "+",
+    symbolCode: "&#9838;"
   },
   FLAT: {
     text: "flat",
-    symbol: "b"
+    symbol: "b",
+    symbolCode: ">&#9837;"
   }
 };
 
@@ -22,17 +25,30 @@ export const GAME_STATUS_NEW = "new";
 export const GAME_STATUS_INPROGRESS = "in progress";
 export const GAME_STATUS_COMPLETED = "completed";
 
+export const TEST_NOTE_STATUS_UNTESTED = "untested";
+export const TEST_NOTE_STATUS_CORRECT = "correct";
+export const TEST_NOTE_STATUS_INCORRECT = "incorrect";
+
 export const SEVERITY_INFO = "info";
 export const SEVERITY_ERROR = "error";
 export const SEVERITY_WARNING = "warning";
 export const SEVERITY_SUCCESS = "success";
 
 export const OPTION_LIST = {
-  instruments: ["guitar", "ukelele"],
+  instruments: [INSTRUMENT_GUITAR, INSTRUMENT_UKELELE],
   keys: ["", KEY?.SHARP?.text, KEY?.NATURAL?.text, KEY?.FLAT?.text],
   numberOfFrets: ["3_Three", "5_Five", "7_Seven"],
-  gameStatuses: [GAME_STATUS_NEW, GAME_STATUS_INPROGRESS, "completed"],
-  severities: [SEVERITY_INFO, "error", "warning", "success"]
+  gameStatuses: [
+    GAME_STATUS_NEW,
+    GAME_STATUS_INPROGRESS,
+    GAME_STATUS_COMPLETED
+  ],
+  severities: [
+    SEVERITY_INFO,
+    SEVERITY_ERROR,
+    SEVERITY_WARNING,
+    SEVERITY_SUCCESS
+  ]
 };
 
 export const NOTE_PROGRESSION = [

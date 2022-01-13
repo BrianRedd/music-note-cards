@@ -1,15 +1,12 @@
 /** @module NoteCardsContainer */
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Row, Col } from "reactstrap";
-import { Button } from "@mui/material";
-import _ from "lodash";
 
 import actions from "../../redux/Actions";
 import * as allTypes from "../../types/appTypes";
-import * as constant from "../../data/constants";
 
 import "./styles/notecardscontainer.scss";
 
@@ -43,37 +40,14 @@ const NoteCardsContainer = props => {
     makeFretboardSelection
   } = props;
 
-  const [showStartButton, setShowStartButton] = useState(true);
-
-  useEffect(() => {
-    setShowStartButton(
-      gameState?.testStatus !== constant.GAME_STATUS_INPROGRESS
-    );
-  }, [gameState]);
-
   return (
     <Row data-test="container-note-cards" className="note-cards-container gx-0">
       <Col xs={4} className="staff-section">
-        {showStartButton ? (
-          <div className="start-button-container">
-            <Button onClick={() => startGame()}>
-              <span className="fas fa-guitar fa-7x color-green" />
-            </Button>
-          </div>
-        ) : (
-          <NoteStaff
-            gameState={gameState}
-            stats={{
-              numberCorrect: (noteState?.completedPool ?? []).length,
-              numberWrong: _.sum(
-                (noteState?.testPool ?? []).map(
-                  note => (note.wrongGuesses ?? []).length
-                )
-              ),
-              numberRemaining: (noteState?.testPool ?? []).length
-            }}
-          />
-        )}
+        <NoteStaff
+          gameState={gameState}
+          noteState={noteState}
+          startGame={startGame}
+        />
       </Col>
       <Col xs={8}>
         <FretBoard
