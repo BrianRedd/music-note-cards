@@ -78,14 +78,18 @@ export const settings = {
     numberOfFrets: number,
     excludedKeys: arrayOf(oneOf(OPTION_LIST.keys)),
     highlightWrong: bool,
-    removeWrongFromPool: bool
+    removeWrongFromPool: bool,
+    timed: bool,
+    timeAllowance: number
   }),
   defaults: {
     instrument: OPTION_LIST.instruments[0],
-    numberOfFrets: 7,
+    numberOfFrets: 5,
     excludedKeys: [],
     highlightWrong: false, // TODO: add option
-    removeWrongFromPool: false
+    removeWrongFromPool: false,
+    timed: false, // TODO: add option
+    timeAllowance: null // TODO: add option
   }
 };
 export const settingsState = {

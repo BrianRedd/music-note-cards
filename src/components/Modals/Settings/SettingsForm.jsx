@@ -29,7 +29,7 @@ const SettingsForm = props => {
   return (
     <Row data-test="form-settings">
       <Col xs={4}>
-        <FormControl component="fieldset" className="mb-2">
+        <FormControl component="fieldset" className="mb-3">
           <FormLabel component="legend">Instrument</FormLabel>
           <RadioGroup
             aria-label="instrument"
@@ -83,6 +83,18 @@ const SettingsForm = props => {
               />
             }
             label="Remove Wrong Answers from Test Pool"
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={settingsObject?.timed}
+                onChange={event => {
+                  updateSettingsInState("timed", event.target.checked);
+                }}
+                disabled
+              />
+            }
+            label="Timed Test"
           />
         </FormControl>
       </Col>

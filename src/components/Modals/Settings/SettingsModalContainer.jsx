@@ -81,6 +81,7 @@ const SettingsModalContainer = props => {
       isOpen={settingsState?.isModalOpen}
       toggle={toggleSettingsModal}
       size="xl"
+      fullscreen="lg"
       centered
     >
       <ModalHeader toggle={toggleSettingsModal}>

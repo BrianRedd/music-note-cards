@@ -65,7 +65,7 @@ export const setTestNote =
       dispatch(
         setGameMessage({
           severity: constant.SEVERITY_WARNING,
-          text: "Game Over!"
+          text: constant.GAME_MESSAGE_GAME_OVER
         })
       );
       dispatch(setTestStatus(constant.GAME_STATUS_COMPLETED));
@@ -88,7 +88,7 @@ export const startGame = () => (dispatch, getState) => {
   dispatch(
     setGameMessage({
       severity: constant.OPTION_LIST.severities[0],
-      text: constant.GAME_MESSAGE_NEW
+      text: constant.GAME_MESSAGE_GOOD_LUCK
     })
   );
   let filteredNotes = allNotes.map(note => ({
@@ -191,8 +191,6 @@ export const makeFretboardSelection = selection => (dispatch, getState) => {
     } else {
       const updatedTestPool = [...testPool];
       updatedTestPool[idx] = updatedTestNote;
-      // eslint-disable-next-line no-console
-      console.log(updatedTestPool, idx, updatedTestNote);
       dispatch(updateTestPool(updatedTestPool));
     }
   }

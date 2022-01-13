@@ -35,6 +35,8 @@ export const SEVERITY_WARNING = "warning";
 export const SEVERITY_SUCCESS = "success";
 
 export const GAME_MESSAGE_NEW = "New Game!";
+export const GAME_MESSAGE_GOOD_LUCK = "Good Luck!";
+export const GAME_MESSAGE_GAME_OVER = "Game Over!";
 
 export const OPTION_LIST = {
   instruments: [INSTRUMENT_GUITAR, INSTRUMENT_UKELELE],
