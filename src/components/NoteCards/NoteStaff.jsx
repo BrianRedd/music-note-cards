@@ -18,10 +18,12 @@ const TrebleClef = () => <span className="treble-clef">&#119070;</span>;
  * @returns {React.Component} - Rendered component.
  */
 const NoteStaff = props => {
-  const { gameState, noteState, startGame } = props;
+  const { gameState, noteState, startGame, toggleSettingsModal } = props;
 
   const stats = {
-    numberCorrect: (noteState?.completedPool ?? []).length,
+    numberCorrect: (noteState?.completedPool ?? []).filter(
+      note => note.lastAttemptStatus === constant.TEST_NOTE_STATUS_CORRECT
+    ).length,
     numberWrong:
       _.sum(
         (noteState?.testPool ?? []).map(
@@ -108,7 +110,15 @@ const NoteStaff = props => {
         </div>
       ) : (
         <div className="start-button-container">
-          <Button onClick={() => startGame()}>
+          <Button
+            onClick={() => {
+              if (gameState.testStatus === constant.GAME_STATUS_NEW) {
+                startGame();
+              } else {
+                toggleSettingsModal();
+              }
+            }}
+          >
             <span className="fas fa-guitar fa-7x color-green" />
           </Button>
         </div>
@@ -120,13 +130,15 @@ const NoteStaff = props => {
 NoteStaff.propTypes = {
   gameState: allTypes.gameState.types,
   noteState: allTypes.noteState.types,
-  startGame: PropTypes.func
+  startGame: PropTypes.func,
+  toggleSettingsModal: PropTypes.func
 };
 
 NoteStaff.defaultProps = {
   gameState: allTypes.gameState.defaults,
   noteState: allTypes.noteState.defaults,
-  startGame: () => {}
+  startGame: () => {},
+  toggleSettingsModal: () => {}
 };
 
 export default NoteStaff;

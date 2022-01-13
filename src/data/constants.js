@@ -34,6 +34,8 @@ export const SEVERITY_ERROR = "error";
 export const SEVERITY_WARNING = "warning";
 export const SEVERITY_SUCCESS = "success";
 
+export const GAME_MESSAGE_NEW = "New Game!";
+
 export const OPTION_LIST = {
   instruments: [INSTRUMENT_GUITAR, INSTRUMENT_UKELELE],
   keys: ["", KEY?.SHARP?.text, KEY?.NATURAL?.text, KEY?.FLAT?.text],

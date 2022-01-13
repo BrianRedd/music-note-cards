@@ -2,7 +2,7 @@
 
 import { oneOf, shape, number, string, bool, arrayOf } from "prop-types";
 
-import { OPTION_LIST } from "../data/constants";
+import { OPTION_LIST, GAME_MESSAGE_NEW } from "../data/constants";
 
 /**
  * @const noteState
@@ -62,7 +62,7 @@ export const gameState = {
     currentTestNote: note.defaults,
     message: {
       severity: OPTION_LIST.severities[0],
-      text: "New Game"
+      text: GAME_MESSAGE_NEW
     }
   }
 };
@@ -81,11 +81,11 @@ export const settings = {
     removeWrongFromPool: bool
   }),
   defaults: {
-    instrument: OPTION_LIST.instruments[1],
-    numberOfFrets: 3,
-    excludedKeys: ["sharp"],
+    instrument: OPTION_LIST.instruments[0],
+    numberOfFrets: 7,
+    excludedKeys: [],
     highlightWrong: false, // TODO: add option
-    removeWrongFromPool: true
+    removeWrongFromPool: false
   }
 };
 export const settingsState = {

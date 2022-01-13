@@ -6,7 +6,8 @@ import {
   addTestPool,
   incrementCompletedPool,
   removeNoteFromTestPool,
-  updateTestPool
+  updateTestPool,
+  clearCompletedPool
 } from "./NoteActions";
 
 import {
@@ -83,6 +84,13 @@ export const startGame = () => (dispatch, getState) => {
     noteState: { allNotes },
     settingsState: { settings }
   } = getState();
+  dispatch(clearCompletedPool());
+  dispatch(
+    setGameMessage({
+      severity: constant.OPTION_LIST.severities[0],
+      text: constant.GAME_MESSAGE_NEW
+    })
+  );
   let filteredNotes = allNotes.map(note => ({
     ...note,
     lastAttemptStatus: constant.TEST_NOTE_STATUS_UNTESTED,
@@ -137,17 +145,14 @@ const getSelectedNoteObject = value => {
  */
 export const makeFretboardSelection = selection => (dispatch, getState) => {
   const {
-    gameState: { currentTestNote },
+    gameState: { currentTestNote, testStatus },
     noteState: { testPool },
     settingsState: { settings }
   } = getState();
-  // eslint-disable-next-line no-console
-  console.log(
-    "makeFretboardSelection; selection:",
-    selection,
-    "\ncurrentTestNote:",
-    currentTestNote
-  );
+
+  if (testStatus !== constant.GAME_STATUS_INPROGRESS) {
+    return;
+  }
 
   const isCorrect =
     selection ===
@@ -181,14 +186,14 @@ export const makeFretboardSelection = selection => (dispatch, getState) => {
     updatedTestNote.wrongGuesses.push(selection);
     updatedTestNote.lastAttemptStatus = constant.TEST_NOTE_STATUS_INCORRECT;
     if (settings?.removeWrongFromPool) {
+      dispatch(incrementCompletedPool(updatedTestNote));
+      dispatch(removeNoteFromTestPool(idx));
+    } else {
       const updatedTestPool = [...testPool];
       updatedTestPool[idx] = updatedTestNote;
       // eslint-disable-next-line no-console
       console.log(updatedTestPool, idx, updatedTestNote);
       dispatch(updateTestPool(updatedTestPool));
-    } else {
-      dispatch(incrementCompletedPool(updatedTestNote));
-      dispatch(removeNoteFromTestPool(idx));
     }
   }
   dispatch(

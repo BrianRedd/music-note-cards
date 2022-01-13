@@ -47,6 +47,7 @@ const NoteCardsContainer = props => {
           gameState={gameState}
           noteState={noteState}
           startGame={startGame}
+          toggleSettingsModal={toggleSettingsModal}
         />
       </Col>
       <Col xs={8}>
