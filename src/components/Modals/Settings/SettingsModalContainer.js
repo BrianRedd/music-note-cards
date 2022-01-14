@@ -81,14 +81,13 @@ const SettingsModalContainer = props => {
     <Modal
       data-test="modal-container-settings"
       isOpen={toggleState?.open?.includes("settings-modal")}
-      toggle={() => toggleToggle("settings-modal")}
       size="xl"
       fullscreen="lg"
       centered
+      backdrop={false}
+      keyboard={false}
     >
-      <ModalHeader toggle={() => toggleToggle("settings-modal")}>
-        Musical Note Cards Settings
-      </ModalHeader>
+      <ModalHeader>Musical Note Cards Settings</ModalHeader>
       <ModalBody>
         <SettingsForm
           settingsObject={theseSettings}

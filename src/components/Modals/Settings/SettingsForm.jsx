@@ -87,6 +87,18 @@ const SettingsForm = props => {
           <FormControlLabel
             control={
               <Switch
+                checked={settingsObject?.highlightWrong}
+                onChange={event => {
+                  updateSettingsInState("highlightWrong", event.target.checked);
+                }}
+                disabled
+              />
+            }
+            label="Highlight Correct Answer"
+          />
+          <FormControlLabel
+            control={
+              <Switch
                 checked={settingsObject?.timed}
                 onChange={event => {
                   updateSettingsInState("timed", event.target.checked);

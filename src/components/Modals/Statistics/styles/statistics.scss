@@ -1,0 +1,34 @@
+/** @module statistics.scss */
+
+@import "../../../../styles/colors.scss";
+
+.statistic-line {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 15px;
+  &:nth-child(even) {
+    background-color: $color-light-grey;
+  }
+}
+
+.wrong-answers {
+  .note-name {
+    font-weight: bold;
+    width: 30px;
+    display: inline-block;
+  }
+  .note-attempts {
+    font-style: italic;
+    padding-right: 5px;
+  }
+  .note-answers {
+    color: $color-grey;
+  }
+}
+
+.label {
+  font-weight: bold;
+}

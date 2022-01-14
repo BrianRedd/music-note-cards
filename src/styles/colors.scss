@@ -1,5 +1,7 @@
 /** @module colors.scss */
 
+$color-light-grey: #eee;
+$color-grey: #888;
 $color-darker-grey: #252a2a;
 
 $color-lavender: #a186be;
@@ -8,6 +10,12 @@ $color-peach: #f9ad81;
 
 $color-green: rgb(0, 106, 92);
 
+$color-red: rgb(124, 0, 68);
+
+
 .color-green {
   color: $color-green;
+}
+.color-red {
+  color: $color-red;
 }
