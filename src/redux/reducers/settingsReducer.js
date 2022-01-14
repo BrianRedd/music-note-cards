@@ -15,11 +15,6 @@ import * as allTypes from "../../types/appTypes";
 const settingsState = (state = allTypes.settingsState.defaults, action) => {
   const { type, payload } = action;
   switch (type) {
-    case actionTypes.TOGGLE_SETTINGS_MODAL:
-      return {
-        ...state,
-        isModalOpen: !state.isModalOpen
-      };
     case actionTypes.UPDATE_SETTINGS:
       return {
         ...state,

@@ -16,6 +16,9 @@ export const SET_CURRENT_TEST_NOTE = "SET_CURRENT_TEST_NOTE";
 export const SET_GAME_MESSAGE = "SET_GAME_MESSAGE";
 
 // settings actions
-export const TOGGLE_SETTINGS_MODAL = "TOGGLE_SETTINGS_MODAL";
 export const UPDATE_SETTINGS = "UPDATE_SETTINGS";
 export const RESET_SETTINGS = "RESET_SETTINGS";
+
+// toggle actions
+export const TOGGLE_TOGGLE = "TOGGLE_TOGGLE";
+export const RESET_TOGGLES = "RESET_TOGGLES";

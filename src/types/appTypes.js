@@ -94,11 +94,22 @@ export const settings = {
 };
 export const settingsState = {
   types: shape({
-    settings: settings.types,
-    isModalOpen: bool
+    settings: settings.types
   }),
   defaults: {
-    settings: settings.defaults,
-    isModalOpen: true
+    settings: settings.defaults
+  }
+};
+
+/**
+ * @const toggleState
+ * @description Types for toggleState Redux store
+ */
+export const toggleState = {
+  types: shape({
+    open: arrayOf(string)
+  }),
+  defaults: {
+    open: ["settings-modal"]
   }
 };

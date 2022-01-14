@@ -8,6 +8,7 @@ import actions from "../redux/Actions";
 
 import NoteCardsContainer from "./NoteCards/NoteCardsContainer";
 import SettingsModalContainer from "./Modals/Settings/SettingsModalContainer";
+import StatisticsModalContainer from "./Modals/Statistics/StatisticsModalContainer";
 
 /**
  * @function Main
@@ -28,6 +29,7 @@ const Main = () => {
     <div data-test="presentation-main">
       <NoteCardsContainer />
       <SettingsModalContainer />
+      <StatisticsModalContainer />
     </div>
   );
 };

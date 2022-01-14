@@ -14,11 +14,12 @@ import * as constant from "../../../data/constants";
 import SettingsForm from "./SettingsForm";
 
 const mapStateToProps = state => ({
-  settingsState: state.settingsState
+  settingsState: state.settingsState,
+  toggleState: state.toggleState
 });
 
 const mapDispatchToProps = {
-  toggleSettingsModal: actions.toggleSettingsModal,
+  toggleToggle: actions.toggleToggle,
   updateSettings: actions.updateSettings,
   resetSettings: actions.resetSettings,
   setTestStatus: actions.setTestStatus
@@ -32,7 +33,8 @@ const mapDispatchToProps = {
 const SettingsModalContainer = props => {
   const {
     settingsState,
-    toggleSettingsModal,
+    toggleState,
+    toggleToggle,
     updateSettings,
     setTestStatus,
     resetSettings
@@ -78,13 +80,13 @@ const SettingsModalContainer = props => {
   return (
     <Modal
       data-test="modal-container-settings"
-      isOpen={settingsState?.isModalOpen}
-      toggle={toggleSettingsModal}
+      isOpen={toggleState?.open?.includes("settings-modal")}
+      toggle={() => toggleToggle("settings-modal")}
       size="xl"
       fullscreen="lg"
       centered
     >
-      <ModalHeader toggle={toggleSettingsModal}>
+      <ModalHeader toggle={() => toggleToggle("settings-modal")}>
         Musical Note Cards Settings
       </ModalHeader>
       <ModalBody>
@@ -98,7 +100,7 @@ const SettingsModalContainer = props => {
           onClick={() => {
             setTestStatus(constant.GAME_STATUS_NEW);
             resetSettings();
-            toggleSettingsModal();
+            toggleToggle("settings-modal");
           }}
         >
           Reset to Defaults
@@ -116,7 +118,7 @@ const SettingsModalContainer = props => {
             }
             updateSettings(theseSettings);
             setTestStatus(constant.GAME_STATUS_NEW);
-            toggleSettingsModal();
+            toggleToggle("settings-modal");
           }}
         >
           Save
@@ -128,7 +130,8 @@ const SettingsModalContainer = props => {
 
 SettingsModalContainer.propTypes = {
   settingsState: allTypes.settingsState.types,
-  toggleSettingsModal: PropTypes.func,
+  toggleState: allTypes.toggleState.types,
+  toggleToggle: PropTypes.func,
   updateSettings: PropTypes.func,
   setTestStatus: PropTypes.func,
   resetSettings: PropTypes.func
@@ -136,7 +139,8 @@ SettingsModalContainer.propTypes = {
 
 SettingsModalContainer.defaultProps = {
   settingsState: allTypes.settingsState.defaults,
-  toggleSettingsModal: () => {},
+  toggleState: allTypes.toggleState.defaults,
+  toggleToggle: () => {},
   updateSettings: () => {},
   setTestStatus: () => {},
   resetSettings: () => {}

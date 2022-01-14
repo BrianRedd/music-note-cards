@@ -18,7 +18,7 @@ const TrebleClef = () => <span className="treble-clef">&#119070;</span>;
  * @returns {React.Component} - Rendered component.
  */
 const NoteStaff = props => {
-  const { gameState, noteState, startGame, toggleSettingsModal } = props;
+  const { gameState, noteState, startGame, toggleToggle } = props;
 
   const stats = {
     numberCorrect: (noteState?.completedPool ?? []).filter(
@@ -115,7 +115,7 @@ const NoteStaff = props => {
               if (gameState.testStatus === constant.GAME_STATUS_NEW) {
                 startGame();
               } else {
-                toggleSettingsModal();
+                toggleToggle("settings-modal");
               }
             }}
           >
@@ -131,14 +131,14 @@ NoteStaff.propTypes = {
   gameState: allTypes.gameState.types,
   noteState: allTypes.noteState.types,
   startGame: PropTypes.func,
-  toggleSettingsModal: PropTypes.func
+  toggleToggle: PropTypes.func
 };
 
 NoteStaff.defaultProps = {
   gameState: allTypes.gameState.defaults,
   noteState: allTypes.noteState.defaults,
   startGame: () => {},
-  toggleSettingsModal: () => {}
+  toggleToggle: () => {}
 };
 
 export default NoteStaff;

@@ -7,6 +7,7 @@ import { createLogger } from "redux-logger";
 import noteState from "./reducers/noteReducer";
 import gameState from "./reducers/gameReducer";
 import settingsState from "./reducers/settingsReducer";
+import toggleState from "./reducers/toggleStateReducer";
 
 const logger = createLogger({ collapsed: true, diff: true });
 
@@ -18,7 +19,8 @@ const store = createStore(
   combineReducers({
     noteState,
     gameState,
-    settingsState
+    settingsState,
+    toggleState
   }),
   undefined,
   applyMiddleware(thunk, logger)

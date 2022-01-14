@@ -21,7 +21,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   startGame: actions.startGame,
-  toggleSettingsModal: actions.toggleSettingsModal,
+  toggleToggle: actions.toggleToggle,
   makeFretboardSelection: actions.makeFretboardSelection
 };
 
@@ -36,7 +36,7 @@ const NoteCardsContainer = props => {
     noteState,
     settingsState: { settings },
     startGame,
-    toggleSettingsModal,
+    toggleToggle,
     makeFretboardSelection
   } = props;
 
@@ -47,7 +47,7 @@ const NoteCardsContainer = props => {
           gameState={gameState}
           noteState={noteState}
           startGame={startGame}
-          toggleSettingsModal={toggleSettingsModal}
+          toggleToggle={toggleToggle}
         />
       </Col>
       <Col xs={8}>
@@ -55,7 +55,7 @@ const NoteCardsContainer = props => {
           settings={settings}
           makeFretboardSelection={makeFretboardSelection}
           gameState={gameState}
-          toggleSettingsModal={toggleSettingsModal}
+          toggleToggle={toggleToggle}
         />
       </Col>
     </Row>
@@ -66,7 +66,7 @@ NoteCardsContainer.propTypes = {
   settingsState: allTypes.settingsState.types,
   gameState: allTypes.gameState.types,
   noteState: allTypes.noteState.types,
-  toggleSettingsModal: PropTypes.func,
+  toggleToggle: PropTypes.func,
   startGame: PropTypes.func,
   makeFretboardSelection: PropTypes.func
 };
@@ -75,7 +75,7 @@ NoteCardsContainer.defaultProps = {
   settingsState: allTypes.settingsState.defaults,
   gameState: allTypes.gameState.defaults,
   noteState: allTypes.noteState.defaults,
-  toggleSettingsModal: () => {},
+  toggleToggle: () => {},
   startGame: () => {},
   makeFretboardSelection: () => {}
 };

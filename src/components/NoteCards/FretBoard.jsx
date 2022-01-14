@@ -15,8 +15,7 @@ import "./styles/fretboard.scss";
  * @returns {React.Component} - Rendered component.
  */
 const FretBoard = props => {
-  const { settings, makeFretboardSelection, gameState, toggleSettingsModal } =
-    props;
+  const { settings, makeFretboardSelection, gameState, toggleToggle } = props;
 
   const Frets = memo(fretProps => {
     const { stringNumber } = fretProps;
@@ -97,7 +96,7 @@ const FretBoard = props => {
           <ButtonBase
             color="inherit"
             size="small"
-            onClick={toggleSettingsModal}
+            onClick={() => toggleToggle("settings-modal")}
           >
             <span className="fas fa-cog fa-2x" />
           </ButtonBase>
@@ -116,14 +115,14 @@ FretBoard.propTypes = {
   settings: allTypes.settings.types,
   gameState: allTypes.gameState.types,
   makeFretboardSelection: PropTypes.func,
-  toggleSettingsModal: PropTypes.func
+  toggleToggle: PropTypes.func
 };
 
 FretBoard.defaultProps = {
   settings: allTypes.settings.defaults,
   gameState: allTypes.gameState.types,
   makeFretboardSelection: () => {},
-  toggleSettingsModal: () => {}
+  toggleToggle: () => {}
 };
 
 export default FretBoard;

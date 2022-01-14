@@ -3,6 +3,7 @@
 import * as noteActions from "./actions/NoteActions";
 import * as gameActions from "./actions/GameActions";
 import * as settingsActions from "./actions/SettingsActions";
+import * as toggleActions from "./actions/ToggleActions";
 
 /**
  * @constant actions
@@ -11,7 +12,8 @@ import * as settingsActions from "./actions/SettingsActions";
 const actions = {
   ...noteActions,
   ...gameActions,
-  ...settingsActions
+  ...settingsActions,
+  ...toggleActions
 };
 
 export default actions;

@@ -9,6 +9,7 @@ import {
   updateTestPool,
   clearCompletedPool
 } from "./NoteActions";
+import { toggleToggle } from "./ToggleActions";
 
 import {
   SET_TEST_STATUS,
@@ -62,6 +63,7 @@ export const setTestNote =
         ? noteState?.testPool
         : filteredNotes;
     if (_.isEmpty(testPool)) {
+      dispatch(toggleToggle("statistics-modal"));
       dispatch(
         setGameMessage({
           severity: constant.SEVERITY_WARNING,

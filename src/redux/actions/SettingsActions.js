@@ -1,18 +1,6 @@
 /** @module SettingsActions */
 
-import {
-  TOGGLE_SETTINGS_MODAL,
-  UPDATE_SETTINGS,
-  RESET_SETTINGS
-} from "../ActionTypes";
-
-/**
- * @function toggleSettingsModal
- * @description toggles settingsState?.isModalOpen flag
- */
-export const toggleSettingsModal = () => ({
-  type: TOGGLE_SETTINGS_MODAL
-});
+import { UPDATE_SETTINGS, RESET_SETTINGS } from "../ActionTypes";
 
 /**
  * @function updateSettings

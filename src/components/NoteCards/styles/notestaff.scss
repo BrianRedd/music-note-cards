@@ -10,12 +10,15 @@ $note-dimension: 20px;
 
 $line: 1px solid black;
 
+.stats {
+  position: absolute;
+}
+
 .staff-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
-  padding-bottom: 75px;
   .stats {
     height: auto;
     padding: 10px;
