@@ -15,7 +15,6 @@ import FretBoard from "./FretBoard";
 
 const mapStateToProps = state => ({
   gameState: state.gameState,
-  noteState: state.noteState,
   settingsState: state.settingsState
 });
 
@@ -33,7 +32,6 @@ const mapDispatchToProps = {
 const NoteCardsContainer = props => {
   const {
     gameState,
-    noteState,
     settingsState: { settings },
     startGame,
     toggleToggle,
@@ -45,7 +43,6 @@ const NoteCardsContainer = props => {
       <Col xs={4} className="staff-section">
         <NoteStaff
           gameState={gameState}
-          noteState={noteState}
           startGame={startGame}
           toggleToggle={toggleToggle}
         />
@@ -65,7 +62,6 @@ const NoteCardsContainer = props => {
 NoteCardsContainer.propTypes = {
   settingsState: allTypes.settingsState.types,
   gameState: allTypes.gameState.types,
-  noteState: allTypes.noteState.types,
   toggleToggle: PropTypes.func,
   startGame: PropTypes.func,
   makeFretboardSelection: PropTypes.func
@@ -74,7 +70,6 @@ NoteCardsContainer.propTypes = {
 NoteCardsContainer.defaultProps = {
   settingsState: allTypes.settingsState.defaults,
   gameState: allTypes.gameState.defaults,
-  noteState: allTypes.noteState.defaults,
   toggleToggle: () => {},
   startGame: () => {},
   makeFretboardSelection: () => {}

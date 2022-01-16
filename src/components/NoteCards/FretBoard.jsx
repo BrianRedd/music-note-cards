@@ -1,8 +1,8 @@
 /** @module FretBoard */
 
-import React, { memo } from "react";
+import React, { memo, useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Alert, ButtonBase } from "@mui/material";
+import { ButtonBase, Snackbar, Alert } from "@mui/material";
 
 import * as constant from "./data/constants";
 import * as allTypes from "../../types/appTypes";
@@ -88,25 +88,35 @@ const FretBoard = props => {
     );
   });
 
+  const [snackbarMessage, setSnackbarMessage] = useState(null);
+
+  useEffect(() => {
+    if (
+      gameState?.message?.text &&
+      gameState?.message?.text !== snackbarMessage
+    ) {
+      setSnackbarMessage(gameState?.message?.text);
+    }
+  }, [gameState.message.text, snackbarMessage]);
+
   return (
     <div data-test="presentation-fretboard" className="section-container">
-      <Alert
-        severity={gameState?.message?.severity}
-        action={
-          <ButtonBase
-            color="inherit"
-            size="small"
-            onClick={() => toggleToggle("settings-modal")}
-          >
-            <span className="fas fa-cog fa-2x" />
-          </ButtonBase>
-        }
-      >
-        {gameState?.message?.text}
-      </Alert>
       <div className="fretboard-container">
+        <ButtonBase
+          className="button-settings"
+          color="inherit"
+          size="small"
+          onClick={() => toggleToggle("settings-modal")}
+        >
+          <span className="fas fa-cog fa-2x" />
+        </ButtonBase>
         <Strings />
       </div>
+      <Snackbar open>
+        <Alert severity={gameState?.message?.severity}>
+          {gameState?.message?.text}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
@@ -120,7 +130,7 @@ FretBoard.propTypes = {
 
 FretBoard.defaultProps = {
   settings: allTypes.settings.defaults,
-  gameState: allTypes.gameState.types,
+  gameState: allTypes.gameState.defaults,
   makeFretboardSelection: () => {},
   toggleToggle: () => {}
 };

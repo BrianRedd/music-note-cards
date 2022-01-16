@@ -2,7 +2,6 @@
 
 import React, { memo } from "react";
 import PropTypes from "prop-types";
-import _ from "lodash";
 import { Button } from "@mui/material";
 
 import * as allTypes from "../../types/appTypes";
@@ -18,25 +17,7 @@ const TrebleClef = () => <span className="treble-clef">&#119070;</span>;
  * @returns {React.Component} - Rendered component.
  */
 const NoteStaff = props => {
-  const { gameState, noteState, startGame, toggleToggle } = props;
-
-  const stats = {
-    numberCorrect: (noteState?.completedPool ?? []).filter(
-      note => note.lastAttemptStatus === constant.TEST_NOTE_STATUS_CORRECT
-    ).length,
-    numberWrong:
-      _.sum(
-        (noteState?.testPool ?? []).map(
-          note => (note.wrongGuesses ?? []).length
-        )
-      ) +
-      _.sum(
-        (noteState?.completedPool ?? []).map(
-          note => (note.wrongGuesses ?? []).length
-        )
-      ),
-    numberRemaining: (noteState?.testPool ?? []).length
-  };
+  const { gameState, startGame, toggleToggle } = props;
 
   const Lines = memo(() => {
     const lines = [];
@@ -84,16 +65,6 @@ const NoteStaff = props => {
 
   return (
     <div data-test="container-note-cards" className="p-2 h-100">
-      {gameState.testStatus !== constant.GAME_STATUS_NEW && (
-        <div className="stats">
-          Number of Correct Guesses: {stats.numberCorrect}
-          <br />
-          Number of Wrong Guesses: {stats.numberWrong}
-          <br />
-          Test Items Remaining: {stats.numberRemaining}
-          <br />
-        </div>
-      )}
       {gameState.testStatus === constant.GAME_STATUS_INPROGRESS ? (
         <div className="staff-container">
           <TrebleClef />
@@ -129,14 +100,12 @@ const NoteStaff = props => {
 
 NoteStaff.propTypes = {
   gameState: allTypes.gameState.types,
-  noteState: allTypes.noteState.types,
   startGame: PropTypes.func,
   toggleToggle: PropTypes.func
 };
 
 NoteStaff.defaultProps = {
   gameState: allTypes.gameState.defaults,
-  noteState: allTypes.noteState.defaults,
   startGame: () => {},
   toggleToggle: () => {}
 };

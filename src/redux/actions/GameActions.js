@@ -67,7 +67,9 @@ export const setTestNote =
       dispatch(
         setGameMessage({
           severity: constant.SEVERITY_WARNING,
-          text: constant.GAME_MESSAGE_GAME_OVER
+          text: `${
+            (noteState?.completedPool ?? []).length
+          } Questions Answered; ${constant.GAME_MESSAGE_GAME_OVER}`
         })
       );
       dispatch(setTestStatus(constant.GAME_STATUS_COMPLETED));
@@ -87,12 +89,6 @@ export const startGame = () => (dispatch, getState) => {
     settingsState: { settings }
   } = getState();
   dispatch(clearCompletedPool());
-  dispatch(
-    setGameMessage({
-      severity: constant.OPTION_LIST.severities[0],
-      text: constant.GAME_MESSAGE_GOOD_LUCK
-    })
-  );
   let filteredNotes = allNotes.map(note => ({
     ...note,
     lastAttemptStatus: constant.TEST_NOTE_STATUS_UNTESTED,
@@ -116,6 +112,12 @@ export const startGame = () => (dispatch, getState) => {
   dispatch(addTestPool(filteredNotes));
   dispatch(setTestNote(filteredNotes));
   dispatch(setTestStatus(constant.GAME_STATUS_INPROGRESS));
+  dispatch(
+    setGameMessage({
+      severity: constant.OPTION_LIST.severities[0],
+      text: `${filteredNotes.length} Questions Ready: ${constant.GAME_MESSAGE_GOOD_LUCK}`
+    })
+  );
 };
 
 /**
@@ -173,6 +175,9 @@ export const makeFretboardSelection = selection => (dispatch, getState) => {
   }
   const updatedTestNote = { ...testPool?.[idx] };
   updatedTestNote.numberOfAttempts += 1;
+
+  const numberOfQuestions = (testPool ?? []).length - 1;
+
   if (isCorrect) {
     // Correct answer
     text = `${currentTestNote.name} is Correct!`;
@@ -199,7 +204,9 @@ export const makeFretboardSelection = selection => (dispatch, getState) => {
   dispatch(
     setGameMessage({
       severity: isCorrect ? constant.SEVERITY_SUCCESS : constant.SEVERITY_ERROR,
-      text
+      text: `${text} (${numberOfQuestions} Question${
+        numberOfQuestions === 1 ? "" : "s"
+      } Left)`
     })
   );
   dispatch(setTestNote());

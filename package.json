@@ -1,5 +1,6 @@
 {
 	"name": "music-note-cards",
+	"homepage": "http://rbrianredd.com/games/music-note-cards/",
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
