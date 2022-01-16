@@ -94,8 +94,9 @@ const SettingsModalContainer = props => {
           updateSettingsInState={updateSettingsInState}
         />
       </ModalBody>
-      <ModalFooter className="d-flex justify-content-between">
+      <ModalFooter className="d-flex justify-content-end">
         <Button
+          variant="outlined"
           onClick={() => {
             setTestStatus(constant.GAME_STATUS_NEW);
             resetSettings();
@@ -104,8 +105,9 @@ const SettingsModalContainer = props => {
         >
           Reset to Defaults
         </Button>
+        <span className="mr-3" />
         <Button
-          variant="outlined"
+          variant="contained"
           onClick={() => {
             if (
               !_.isEqual(

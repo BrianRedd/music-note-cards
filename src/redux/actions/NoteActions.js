@@ -1,5 +1,7 @@
 /** @module NoteActions */
 
+import _ from "lodash";
+
 import {
   ADD_ALL_NOTES,
   ADD_TEST_POOL,
@@ -129,7 +131,19 @@ export const initializeAllNotes = () => dispatch => {
     const startNoteIdx = (NOTE_PROGRESSION ?? [])
       .map(note => note.note)
       .indexOf(string.toUpperCase());
-    const numberOfFrets = idx === 0 ? 6 : 3;
+    let numberOfFrets = 3;
+    switch (idx) {
+      case 0:
+        numberOfFrets = 6;
+        break;
+      case 1:
+      case 3:
+      case 5:
+        numberOfFrets = 4;
+        break;
+      default:
+        numberOfFrets = 3;
+    }
     for (let i = 0; i <= numberOfFrets; i += 1) {
       const noteObject = NOTE_PROGRESSION?.[(startNoteIdx + i) % 12];
       const noteName = `${noteObject?.note}${noteObject?.key?.symbol ?? ""}`;
@@ -139,7 +153,7 @@ export const initializeAllNotes = () => dispatch => {
       ).length;
       const staffAndLedgerArrayChunk = staffAndLedgersArray.slice(
         staffAndLedgerChunk * 7,
-        (staffAndLedgerChunk + 1) * 7
+        Math.min((staffAndLedgerChunk + 1) * 7, staffAndLedgersArray.length)
       );
       const staffAndLedgerObject = staffAndLedgerArrayChunk.find(
         note => note.note === noteObject.note
@@ -158,5 +172,6 @@ export const initializeAllNotes = () => dispatch => {
       });
     }
   });
-  dispatch(addAllNotes(allNotesArray));
+
+  dispatch(addAllNotes(_.sortBy(allNotesArray, "staffValue")));
 };

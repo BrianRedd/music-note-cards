@@ -91,7 +91,6 @@ const SettingsForm = props => {
                 onChange={event => {
                   updateSettingsInState("highlightWrong", event.target.checked);
                 }}
-                disabled
               />
             }
             label="Highlight Correct Answer"

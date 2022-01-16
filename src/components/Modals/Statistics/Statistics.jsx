@@ -44,13 +44,15 @@ const Statistics = props => {
           id: note.id,
           name: note.name,
           noWrongAttempts: (note.wrongGuesses ?? 0).length,
-          wrongAnswers: (note.wrongGuesses ?? []).map(
-            guess =>
-              (noteState?.allNotes ?? []).find(
-                guessedNote =>
-                  guessedNote.stringValue === Number(guess.split("-")[0]) &&
-                  guessedNote.tabValue === Number(guess.split("-")[1])
-              )?.name
+          wrongAnswers: _.compact(
+            (note.wrongGuesses ?? []).map(
+              guess =>
+                (noteState?.allNotes ?? []).find(
+                  guessedNote =>
+                    guess ===
+                    `${guessedNote.stringValue}-${guessedNote.tabValue}`
+                )?.name
+            )
           )
         })),
       "id"
@@ -60,7 +62,7 @@ const Statistics = props => {
         <span className="note-name">{answer.name}: </span>
         <span className="note-attempts">
           {answer.noWrongAttempts} attempt
-          {answer.wrongAnswers.length !== 1 && "s"}
+          {answer.noWrongAttempts !== 1 && "s"}
         </span>
         <span className="note-answers">({answer.wrongAnswers.join(", ")})</span>
       </div>
@@ -116,7 +118,7 @@ const Statistics = props => {
       <Col
         xs={8}
         className="wrong-answers"
-        style={{ columnCount: Math.ceil(stats.numberWrong / 8) }}
+        style={{ columnCount: Math.min(Math.ceil(stats.numberWrong / 9), 3) }}
       >
         <div className="label">Wrong Answers</div>
         <WrongAnswers />

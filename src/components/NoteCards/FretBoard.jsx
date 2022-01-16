@@ -4,7 +4,7 @@ import React, { memo, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { ButtonBase, Snackbar, Alert } from "@mui/material";
 
-import * as constant from "./data/constants";
+import * as constant from "../../data/constants";
 import * as allTypes from "../../types/appTypes";
 
 import "./styles/fretboard.scss";
@@ -16,6 +16,21 @@ import "./styles/fretboard.scss";
  */
 const FretBoard = props => {
   const { settings, makeFretboardSelection, gameState, toggleToggle } = props;
+
+  const [correctFret, setCorrectFret] = useState(null);
+
+  const makeThisFretboardSelection = selection => {
+    if (gameState?.testStatus === constant.GAME_STATUS_INPROGRESS) {
+      window.clearTimeout();
+      makeFretboardSelection(selection);
+      const thisCorrectFret = `${gameState?.currentTestNote?.stringValue}-${gameState?.currentTestNote.tabValue}`;
+      if (settings?.highlightWrong && selection !== thisCorrectFret)
+        setCorrectFret(thisCorrectFret);
+      window.setTimeout(() => {
+        setCorrectFret(null);
+      }, 500);
+    }
+  };
 
   const Frets = memo(fretProps => {
     const { stringNumber } = fretProps;
@@ -34,8 +49,8 @@ const FretBoard = props => {
           key={key}
         >
           <ButtonBase
-            className="button"
-            onClick={() => makeFretboardSelection(key)}
+            className={`button ${key === correctFret ? "selected" : ""}`}
+            onClick={() => makeThisFretboardSelection(key)}
           />
         </div>
       );
@@ -52,8 +67,8 @@ const FretBoard = props => {
       bottomButtons.push(
         <div className="fret bottom-fret" key={key}>
           <ButtonBase
-            className="button bottom-button"
-            onClick={() => makeFretboardSelection(key)}
+            className={`button bottom-button fret_${key}`}
+            onClick={() => makeThisFretboardSelection(key)}
           />
         </div>
       );
@@ -89,6 +104,7 @@ const FretBoard = props => {
   });
 
   const [snackbarMessage, setSnackbarMessage] = useState(null);
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
 
   useEffect(() => {
     if (
@@ -96,6 +112,7 @@ const FretBoard = props => {
       gameState?.message?.text !== snackbarMessage
     ) {
       setSnackbarMessage(gameState?.message?.text);
+      setIsSnackbarOpen(true);
     }
   }, [gameState.message.text, snackbarMessage]);
 
@@ -112,7 +129,11 @@ const FretBoard = props => {
         </ButtonBase>
         <Strings />
       </div>
-      <Snackbar open>
+      <Snackbar
+        open={isSnackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setIsSnackbarOpen(false)}
+      >
         <Alert severity={gameState?.message?.severity}>
           {gameState?.message?.text}
         </Alert>

@@ -154,6 +154,9 @@ export const makeFretboardSelection = selection => (dispatch, getState) => {
     settingsState: { settings }
   } = getState();
 
+  // eslint-disable-next-line no-console
+  console.log("Fret Selection:", selection);
+
   if (testStatus !== constant.GAME_STATUS_INPROGRESS) {
     return;
   }
